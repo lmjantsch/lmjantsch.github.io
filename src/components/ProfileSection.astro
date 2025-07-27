@@ -1,0 +1,37 @@
+---
+import profilePicture from '../assets/profile_picture.jpg'
+import { Linkedin, Github, Mail, GraduationCap } from '@lucide/astro';
+import { GREETING, INTRODUCTION } from '../consts';
+import Socials from './Socials.astro';
+---
+<div class="flex flex-col sm:flex-row md:flex-col items-center">
+    <a href="/" class="block z-10 group transition-transform duration-300 hover:scale-[1.02]">
+    <div class="flex flex-col sm:flex-row md:flex-col items-center sm:items-start md:items-center h-full px-2 md:px-4">
+
+        <!-- Profile Picture -->
+        <div class="p-4 sm:p-0 md:p-4 w-[80%] min-w-[170px] max-w-[300px]">
+        <img
+            src={profilePicture.src}
+            alt="Profile Picture"
+            class="rounded-full"
+        />
+        </div>
+
+        <!-- Author Text -->
+        <div class="flex flex-col items-center sm:items-start md:items-center px-0 sm:px-8 md:px-0">
+            <div class="pb-4 text-left">
+                <h2 class="text-2xl text-primary dark:text-primary_dark font-bold">{GREETING}</h2>
+                <p class="mt-2 text-secondary dark:text-secondary_dark max-w-md transition-opacity group-hover:opacity-80 line-clamp-4">
+                    {INTRODUCTION}
+                </p>
+            </div>
+        </div>
+    </div>
+    </a>
+    <div class="mt-2">
+        <Socials /> 
+    </div>
+
+</div>
+
+

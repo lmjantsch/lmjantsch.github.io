@@ -1,0 +1,14 @@
+---
+const {data} = Astro.props
+---
+
+<li class="text-secondary dark:text-secondary_dark">
+    <p><strong class="text-primary dark:text-primary_dark">{data.title}</strong> — {data.note}</p>
+    {'links' in data && data.links && 
+        <div class="flex flex-wrap gap-3 mt-1 text-sm text-primary dark:text-primary_dark">
+            {data.links.map((item: {title:string, link:string}) => (
+                <a href={item.link} class="hover:underline">{item.title}</a>
+            ))}
+        </div>
+    }
+</li>

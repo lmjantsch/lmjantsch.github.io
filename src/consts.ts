@@ -1,5 +1,219 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_TITLE = 'Astro Blog';
-export const SITE_DESCRIPTION = 'Welcome to my website!';
+// metadata
+export const SITE_TITLE = "LMJ's Profile";
+export const SITE_DESCRIPTION = 'Welcome to my portfolio website!';
+
+// Profile
+export const GREETING = "👋 Hey, I'm Lasse"
+export const INTRODUCTION = "I'm an economist turned computer scientist, currently pursuing my Master's degree in Daegu, South Korea. My research focuses on latent state analysis for reasoning and knowledge extraction in large language models (LLMs), as well as AI applications, particularly in the context of scholarly document processing. Beyond that, I'm also interested in the economic and societal implications of technological advances."
+export const CONTACT_AND_CV = "Pleae contact me at lassejantsch [at] knu.ac.kr and find my comprehensive CV."
+
+
+// Socials
+export const GITHUB = "https://github.com/LasseJantsch"
+export const LINKEDIN = "https://www.linkedin.com/in/lasse-jantsch-6985581a7"
+export const GOOGLESCHOLAR = "https://scholar.google.com/citations?user=FjrsTUUAAAAJ"
+
+// Work Experience
+export const CVITEMS = [
+    {
+        'title': "📄 Publicaitions",
+        "type": "timeline",
+        "data": [
+            {
+                "year":2025,
+                "data": {
+                    "award": null,
+                    "title": "FineCite: A New Framework For Fine-Grained Citation Context Analysis",
+                    "authors": "Lasse Jantsch, Dong-Jae Koh, Seonghwan Yoon, Jisu Lee, Anne Lauscher, Young-Kyoon Suh",
+                    "venue": "Finding of the Association for Computational Linguistics: ACL 2025",
+                    "links": [
+                        {
+                            "title": "📄 Paper",
+                            "link": "https://aclanthology.org/2025.findings-acl.1259/"
+                        },                        
+                        {
+                            "title": "💻 Code",
+                            "link": "https://github.com/lab-paper-code/FineCite"
+                        },
+                    ]
+                }
+            },
+            {
+                "year":2025,
+                "data": {
+                    "award": null,
+                    "title": "A Metric-Based Direct Preference Optimization Method for Human-Aligned Summarization",
+                    "authors": "Seonghwan Yoon, Lasse Jantsch, Hwansong Joo, Young-Kyoon Suh",
+                    "venue": "Korean Computer Congress (KCC) 2025",
+                    "links": []
+                }
+            },
+            {
+                "year":2024,
+                "data": {
+                    "award": null,
+                    "title": "QRiousRAG: Retrieval Augmented Generation with Question-refinement using LLMs in ambiguous question answering",
+                    "authors": "Dong-Jae Koh, Lasse Jantsch, Hwansong Joo, Young-Kyoon Suh",
+                    "venue": "Korean Software Congress (KSC) 2024",
+                    "links": [
+                        {
+                            "title": "📄 Paper",
+                            "link": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=FjrsTUUAAAAJ:d1gkVwhDpl0C"
+                        }
+                    ]
+                }
+            },
+            {
+                "year":2024,
+                "data": {
+                    "award": "🏆 Best Poster Award",
+                    "title": "SciConBERT: A Dynamic Citation Context Extraction Model Using Siamese BERT",
+                    "authors": "Lasse Jantsch, Jisu Lee, Joel Thomas, Jiarun Cheong, Young-Kyoon Suh",
+                    "venue": "Korean Computer Congress (KCC) 2024",
+                    "links": [
+                        {
+                            "title": "📄 Paper",
+                            "link": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=FjrsTUUAAAAJ:u5HHmVD_uO8C"
+                        }
+                    ]
+                }
+            },
+            {
+                "year":2023,
+                "data": {
+                    "award": null,
+                    "title": "Analyzing the Impact of Rising Inequality and the Covid-19 Pandemic on News Consumption Patterns Across Different Demographics",
+                    "authors": "Lasse Jantsch, Sien Papousek, Hyejung Shin, Anna-Katarina Kusimäki, Pauline Le Marrec, Chankyung Pak",
+                    "venue": "The 11th Korea Media Panel Academic Conference 2023",
+                    "links": []
+                }
+            }
+        ]
+    },
+    {
+        "title": "🎓 Education",
+        "type": "logo-list",
+        "data": [
+            {
+                "logo_path": "src/assets/knu_logo.svg",
+                "logo_alt": "Kyungpook National University Logo",
+                "title": "M.Sc. Computer Science",
+                "note": "Kyungpook National University",
+                "line1": "Focus: Natural Language Processing, Deep Learning",
+                "line2": "2024 - 2026"
+            },
+            {
+                "logo_path": "src/assets/uhh_logo.svg",
+                "logo_alt": "University of Hamburg Logo",
+                "title": "B.A. Computer Science",
+                "note": "University of Hamburg",
+                "line1": "Deep Learning for Sovereign Risk Contagion Modelling",
+                "line2": "2020 - 2024"
+            }
+        ]
+    },
+    {
+        "title": "🔬 Research Experience",
+        "type": "list",
+        "data": [
+            {
+                "title": "Graduate Research Assistant",
+                "note": "Kyungpook National University (Mar 2024 - Present)"
+            },
+            {
+                "title": "Research Intern",
+                "note": "Kyungpook National University (Jul 2023 - Sep 2023)"
+            }
+        ]
+    },
+    {
+        "title": "💼 Work Experience",
+        "type": "list",
+        "data": [
+            {
+                "title": "Data Science Engineer (Working Student)",
+                "note": "Yoma Solutions (Oct 2023 - Feb 2024)"
+            },
+            {
+                "title": "Business Development Assistant (Working Student)",
+                "note": "Kasko (Jan 2022 - Jun 2022)"
+            },
+            {
+                "title": "Technical Project Manager (Working Student)",
+                "note": "bCyber (Dec 2022 - Jun 2022)"
+            },
+            {
+                "title": "Web / Mobile Developer",
+                "note": "Self-Employed (Jan 2022 - Jun 2022)"
+            },
+            {
+                "title": "Promoter / Fundraiser (Working Student)",
+                "note": "Dialog Direct (Jan 2022 - Jun 2022)"
+            },
+        ]
+    },
+    {
+        "title": "🏆 Scholarships",
+        "type": "list",
+        "data": [
+            {
+                "title": "Brain Korea 21 Scholarship for Outstanding Graduate Students",
+                "note": "Mar 2024 - Present"
+            },
+            {
+                "title": "KINGS: Kyungpook National University International Graduate Scholarship",
+                "note": "Mar 2024 - Present"
+            },
+            {
+                "title": "Kyungpook National University Excellent Foreign Student Scholarship",
+                "note": "Dec 2024"
+
+            }
+            
+        ]
+    },
+    {
+        "title":"🌍 Volunteering",
+        "type": "list",
+        "data": [
+            {
+                "title": "Kyungpook National University",
+                "note": "International Student Ambassador (Sep 2022 - Feb 2023)",
+                "links": []
+            },
+            {
+                "title": "Techlabs Hamburg",
+                "note": "Partnership Management Team (Sep 2021 - Sep 2022)",
+                "links": [
+                    {
+                        "title": "🌐 Website",
+                        "link": "https://www.techlabs.org/location/hamburg"
+                    },                        
+                ]
+            },
+            {
+                "title": "Bhongolethu Foundation",
+                "note": "Fundraising for Grade 4 Class Room (Sep 2019 - Apr 2020)",
+                "links": [
+                        {
+                            "title": "🎥 Fundraising Video",
+                            "link": "https://www.youtube.com/watch?v=Gj-NPJ-GtCQ&ab_channel=BhongolethuFoundation"
+                        },                        
+                    ]
+            },
+            {
+                "title": "Bhongolethu Foundation",
+                "note": "Primary School Teaching Assistance (Sep 2019 - Apr 2020)",
+                "links": [
+                        {
+                            "title": "🌐 Website",
+                            "link": "https://bhongolethufoundation.org.za/"
+                        },                         
+                    ]
+            }
+        ]
+    }
+]

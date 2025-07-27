@@ -1,0 +1,35 @@
+---
+import CvPublicationItem from "./CvPublicationItem.astro";
+
+const {data} = Astro.props
+---
+<div class="relative flex flex-row">
+
+    <!-- Time Line -->
+    <div class="absolute left-6.5 top-0 bottom-0 mb-3 flex justify-center">
+        <div class="w-1 bg-secondary_bg dark:bg-secondary_bg_dark h-full rounded-full"></div>
+    </div>
+
+    <!-- Item List -->
+    <div>
+        {data.map((item: {year: number, data: any}, index: number) => {
+            const prevItem = index > 0 ? data[index - 1] : null;
+            const shouldInsertYearMarker = !prevItem || prevItem.year !== item.year;
+
+            return(
+                <>
+                    {shouldInsertYearMarker && (
+                        <div class="mb-1 z-10">
+                            <div class="relative w-14 bg-secondary_bg dark:bg-secondary_bg_dark text-secondary dark:text-secondary_dark text-xs font-bold px-3 py-1 rounded-full shadow-[0_-15px_0px] shadow-primary_bg dark:shadow-primary_bg_dark">
+                                {item.year}
+                            </div>
+                        </div>
+                    )}
+                    <div class="ml-14">
+                        <CvPublicationItem data={item.data} />
+                    </div>
+                </>
+            )
+        })}
+    </div>
+</div>

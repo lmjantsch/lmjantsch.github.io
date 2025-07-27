@@ -1,0 +1,17 @@
+---
+const {data} = Astro.props
+---
+
+<div class="flex items-start gap-4">
+    <!-- University Logo -->
+    <div class="w-16 h-16 flex-shrink-0">
+        <img src={data?.logo_path} alt={data.logo_alt} class="rounded-lg w-full h-full object-contain" />
+    </div>
+
+    <!-- Degree Info -->
+    <div class="flex flex-col text-secondary dark:text-secondary_dark">
+        <p class="text-base text-primary dark:text-primary_dark"><strong class="text-lg">{data?.title}</strong> - {data?.note}</p>
+        <p class="text-sm italic text-gray-600 dark:text-gray-400">{data?.line1}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-500">{data?.line2}</p>
+    </div>
+</div>

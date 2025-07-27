@@ -1,0 +1,37 @@
+---
+const {data} = Astro.props
+const highlight = 'Lasse Jantsch'
+const split_authors = data.authors.split(highlight)
+---
+
+<div class="relative col-start-2 col-span-9 mb-4">
+    <div class="ml-2">
+        <!-- Award -->
+        {'award' in data && data.award && <p class="text-xs text-green-600 dark:text-green-400">{data.award}</p>}
+
+        <!-- Title -->
+        <p class="font-semibold text-sm text-primary dark:text-primary_dark">
+            {data.title}
+        </p>
+
+        <!-- Authors -->
+        <p class="text-sm text-secondary dark:text-secondary_dark italic">
+            {split_authors.map((part:string, index:number) => (
+                <>
+                {index > 0 && <strong>{highlight}</strong>}
+                {part}
+                </>
+            ))}
+        </p>
+
+        <!-- Conference -->
+        <p class="text-xs text-secondary dark:text-secondary_dark">{data.venue}</p>
+
+        <!-- Links -->
+        <div class="flex flex-wrap gap-3 mt-1 text-sm text-primary dark:text-primary_dark">
+            {data.links.map((item: {title:string, link:string}) => (
+                <a href={item.link} class="hover:underline">{item.title}</a>
+            ))}
+        </div>
+    </div>
+</div>

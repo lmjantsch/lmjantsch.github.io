@@ -1,0 +1,33 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import ProfileSection from '../components/ProfileSection.astro'
+import PostCard from '../components/PostCard.astro';
+import Footer from '../components/Footer.astro';
+
+const posts = (await getCollection('post')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+---
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} >
+	<div id="layout-container" class="max-w-6xl mx-auto flex flex-row">
+		<section id="profile-section" class="flex flex-col justify-between grow basis-30/100">
+			<ProfileSection/>
+			<Footer/>
+		</section>
+		<section id="blog-section" class="h-[90vh] basis-70/100 overflow-scroll px-4 py-4">
+			{posts.map(post => (
+				<PostCard 
+					title={post.data.title}
+					description={post.data.description}
+					date={post.data.date}
+					updatedDate={post.data.updatedDate}
+					slug={post.data.slug}
+				/>
+			))}
+		</section>
+
+	</div>
+</BaseLayout>
