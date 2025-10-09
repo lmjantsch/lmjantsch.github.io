@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, GREETING, INTRODUCTION, CVITEMS, CONTACT_AND_CV } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, GREETING, INTRODUCTION, CVITEMS, CONTACT_AND_CV } from '../data/consts';
 import profilePicture from '../assets/profile_picture.jpg'
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Footer from '../components/Footer.astro';
@@ -12,7 +12,7 @@ import CvLogoListEntry from '../components/CvLogoListEntry.astro';
 import CvTimelineEntry from '../components/CvTimelineEntry.astro';
 ---
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} >
-	<section class="max-w-6xl px-50 mx-auto h-[90vh] px-4 py-8 flex flex-col items-center text-center overflow-scroll">
+	<section class="max-w-3xl mx-auto px-4 py-8 flex flex-col items-center text-center min-h-[90vh]">
 
 	<!-- Profile Image -->
 	<img

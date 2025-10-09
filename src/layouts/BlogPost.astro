@@ -9,24 +9,23 @@ type Props = CollectionEntry<'post'>['data'];
 const { title, description, date, updatedDate } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} >
-	<article class="max-w-6xl mx-auto flex flex-col items-center">
-		<div class="prose">
-			<div class="title">
-				<div class="date">
-					<FormattedDate date={date} />
-					{
-						updatedDate && (
-							<div class="last-updated-on">
-								Last updated on <FormattedDate date={updatedDate} />
-							</div>
-						)
-					}
-				</div>
-				<h1>{title}</h1>
-				<hr />
-			</div>
-			<slot />
-		</div>
-		<Footer/>
-	</article>
+<BaseLayout title={title} description={description}>
+    <main class="max-w-6xl mx-auto py-8 px-4">
+        <article class="prose prose-lg dark:prose-invert mx-auto">
+            <div class="text-center mb-8">
+                <p class="text-base text-secondary dark:text-secondary_dark">
+                    <FormattedDate date={date} />
+                </p>
+                <h1 class="text-4xl font-bold text-primary dark:text-primary_dark mb-2">{title}</h1>
+                {updatedDate && (
+                    <p class="text-sm text-secondary dark:text-secondary_dark italic">
+                        Last updated on <FormattedDate date={updatedDate} />
+                    </p>
+                )}
+            </div>
+            
+            <slot />
+        </article>
+    </main>
+    <Footer />
+</BaseLayout>

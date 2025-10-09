@@ -1,0 +1,755 @@
+
+
+###########################
+#       Folder Tree       #
+###########################
+
+├── content.config.ts
+├── content
+│   └── posts
+│       ├── blog-1 copy 2
+│       │   └── index.mdx
+│       ├── blog-1 copy 4
+│       │   └── index.mdx
+│       ├── blog-1 copy 3
+│       │   └── index.mdx
+│       ├── first-post.mdf
+│       ├── blog-1 copy
+│       │   └── index.mdx
+│       └── blog-1
+│           └── index.mdx
+├── styles
+│   └── global.css
+├── components
+│   ├── CvSection.astro
+│   ├── CvListEntry.astro
+│   ├── FormattedDate.astro
+│   ├── CvLogoListEntry.astro
+│   ├── Footer.astro
+│   ├── ProfileSection.astro
+│   ├── CvTimelineEntry.astro
+│   ├── Socials.astro
+│   ├── HeaderLink.astro
+│   ├── PostCard.astro
+│   ├── CvListItem.astro
+│   ├── CvPublicationItem.astro
+│   ├── Header.astro
+│   ├── CvLogoListItem.astro
+│   └── BaseHead.astro
+├── layouts
+│   ├── BlogPost.astro
+│   └── BaseLayout.astro
+├── data
+│   ├── cv.json
+│   └── consts.ts
+├── assets
+│   ├── knu_logo.svg
+│   ├── profile_picture.jpg
+│   └── uhh_logo.svg
+└── pages
+    ├── posts
+    │   └── [...slug].astro
+    ├── rss.xml.js
+    ├── index.astro
+    └── blog.astro
+
+
+
+#################################
+#       content.config.ts       #
+#################################
+
+import { glob } from 'astro/loaders';
+import { defineCollection, z } from 'astro:content';
+
+const post = defineCollection({
+	loader: glob({ base: './src/content/posts', pattern: '**/*.{md,mdx}' }),
+	// Type-check frontmatter using a schema
+	schema: () => z.object({
+		title: z.string(),
+		description: z.string(),
+		date: z.coerce.date(),
+		updatedDate: z.coerce.date().optional(),
+		slug: z.string()
+	}),
+});
+
+export const collections = { post };
+
+
+###############################
+#       CvSection.astro       #
+###############################
+
+---
+const {title} = Astro.props
+---
+<div class="mb-10">
+    <h2 class="text-2xl font-semibold textmb-2 text-primary dark:text-primary_dark">{title}</h2>
+    <div class="my-4">
+        <slot />
+    </div>
+</div>
+
+
+#################################
+#       CvListEntry.astro       #
+#################################
+
+---
+import CvListItem from "./CvListItem.astro";
+
+const {data} = Astro.props
+---
+<ul class="space-y-1">
+    {data.map((item: { title: string; note: string }) => (
+        <CvListItem data = {item}/>
+    ))}
+</ul>
+
+
+###################################
+#       FormattedDate.astro       #
+###################################
+
+---
+interface Props {
+	date: Date;
+}
+
+const { date } = Astro.props;
+---
+
+<time datetime={date.toISOString()}>
+	{
+		date.toLocaleDateString('en-us', {
+			year: 'numeric',
+			month: 'short',
+			day: 'numeric',
+		})
+	}
+</time>
+
+
+#####################################
+#       CvLogoListEntry.astro       #
+#####################################
+
+---
+import CvLogoListItem from "./CvLogoListItem.astro"
+
+const {data} = Astro.props
+---
+<div class="space-y-6">
+    {data.map((item: {logo_path:string, logo_alt:string, title:string, note:string, line1:string, line2:string}) => (
+        <CvLogoListItem data={item} />
+    ))}
+</div>
+
+
+############################
+#       Footer.astro       #
+############################
+
+---
+const today = new Date();
+---
+
+<footer class="w-full flex flex-col items-center p-2 text-secondary text-xs">
+	&copy; {today.getFullYear()} Lasse Jantsch. All rights reserved.
+</footer>
+
+
+####################################
+#       ProfileSection.astro       #
+####################################
+
+---
+import profilePicture from '../assets/profile_picture.jpg'
+import { Linkedin, Github, Mail, GraduationCap } from '@lucide/astro';
+import { GREETING, INTRODUCTION } from '../data/consts';
+import Socials from './Socials.astro';
+---
+<div class="flex flex-col sm:flex-row md:flex-col items-center">
+    <a href="/" class="block z-10 group transition-transform duration-300 hover:scale-[1.02]">
+    <div class="flex flex-col sm:flex-row md:flex-col items-center sm:items-start md:items-center h-full px-2 md:px-4">
+
+        <!-- Profile Picture -->
+        <div class="p-4 sm:p-0 md:p-4 w-[80%] min-w-[170px] max-w-[300px]">
+        <img
+            src={profilePicture.src}
+            alt="Profile Picture"
+            class="rounded-full"
+        />
+        </div>
+
+        <!-- Author Text -->
+        <div class="flex flex-col items-center sm:items-start md:items-center px-0 sm:px-8 md:px-0">
+            <div class="pb-4 text-left">
+                <h2 class="text-2xl text-primary dark:text-primary_dark font-bold">{GREETING}</h2>
+                <p class="mt-2 text-secondary dark:text-secondary_dark max-w-md transition-opacity group-hover:opacity-80 line-clamp-4">
+                    {INTRODUCTION}
+                </p>
+            </div>
+        </div>
+    </div>
+    </a>
+    <div class="mt-2">
+        <Socials /> 
+    </div>
+
+</div>
+
+
+#####################################
+#       CvTimelineEntry.astro       #
+#####################################
+
+---
+import CvPublicationItem from "./CvPublicationItem.astro";
+
+const {data} = Astro.props
+---
+<div class="relative flex flex-row">
+
+    <!-- Time Line -->
+    <div class="absolute left-6.5 top-0 bottom-0 mb-3 flex justify-center">
+        <div class="w-1 bg-secondary_bg dark:bg-secondary_bg_dark h-full rounded-full"></div>
+    </div>
+
+    <!-- Item List -->
+    <div>
+        {data.map((item: {year: number, data: any}, index: number) => {
+            const prevItem = index > 0 ? data[index - 1] : null;
+            const shouldInsertYearMarker = !prevItem || prevItem.year !== item.year;
+
+            return(
+                <>
+                    {shouldInsertYearMarker && (
+                        <div class="mb-1 z-10">
+                            <div class="relative w-14 bg-secondary_bg dark:bg-secondary_bg_dark text-secondary dark:text-secondary_dark text-xs font-bold px-3 py-1 rounded-full shadow-[0_-15px_0px] shadow-primary_bg dark:shadow-primary_bg_dark">
+                                {item.year}
+                            </div>
+                        </div>
+                    )}
+                    <div class="ml-14">
+                        <CvPublicationItem data={item.data} />
+                    </div>
+                </>
+            )
+        })}
+    </div>
+</div>
+
+
+#############################
+#       Socials.astro       #
+#############################
+
+---
+import { Linkedin, Github, GraduationCap } from '@lucide/astro';
+import { LINKEDIN, GITHUB, GOOGLESCHOLAR } from '../data/consts';
+---
+
+<div class="flex justify-around space-x-4 text-secondary dark:secondary_dark">
+    <!-- LinkedIn -->
+    <a href={LINKEDIN} aria-label="LinkedIn" class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
+        <Linkedin class="w-6 h-6" />
+    </a>
+
+    <!-- GitHub -->
+    <a href={GITHUB} aria-label="GitHub" class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
+        <Github class="w-6 h-6" />
+    </a>
+
+    <!-- Google Scholar -->
+    <a href={GOOGLESCHOLAR} aria-label="Google Scholar" class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
+        <GraduationCap class="w-6 h-6" />
+    </a>    
+</div>
+
+
+################################
+#       HeaderLink.astro       #
+################################
+
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'>;
+
+const { href, class: className, ...props } = Astro.props;
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const subpath = pathname.match(/[^\/]+/g);
+const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+---
+
+<a href={href} class:list={[className, { active: isActive }]} {...props}>
+	<slot />
+</a>
+<style>
+	a {
+		display: inline-block;
+		text-decoration: none;
+	}
+	a.active {
+		font-weight: bolder;
+		text-decoration: underline;
+	}
+</style>
+
+
+##############################
+#       PostCard.astro       #
+##############################
+
+---
+const { title, description, date, slug } = Astro.props;
+---
+
+<a href={`/posts${slug}`} class="block no-underline text-black dark:text-white">
+  <div class="flex flex-col items-center mx-4 mb-8 bg-secondary_bg dark:bg-secondary_bg_dark rounded-xl hover:scale-[1.02] transition-scale duration-300">
+    <!-- Text Section -->
+    <div class="px-6 pt-6 pb-4 flex flex-col justify-center">
+        <h2 class="text-xl text-primary dark:text-primary_dark font-bold mb-2 group-hover:underline">{title}</h2>
+        <p class="text-sm text-secondary dark:text-secondary_dark line-clamp-2">{description}</p>
+        <h3 class="text-xs mt-4 text-secondary dark:text-secondary_dark mb-1">Publication Date: {new Date(date).toLocaleDateString()}</h3>
+    </div>
+
+  </div>
+</a>
+
+
+################################
+#       CvListItem.astro       #
+################################
+
+---
+const {data} = Astro.props
+---
+
+<li class="text-secondary dark:text-secondary_dark">
+    <p><strong class="text-primary dark:text-primary_dark">{data.title}</strong> — {data.note}</p>
+    {'links' in data && data.links && 
+        <div class="flex flex-wrap gap-3 mt-1 text-sm text-primary dark:text-primary_dark">
+            {data.links.map((item: {title:string, link:string}) => (
+                <a href={item.link} class="hover:underline">{item.title}</a>
+            ))}
+        </div>
+    }
+</li>
+
+
+#######################################
+#       CvPublicationItem.astro       #
+#######################################
+
+---
+const {data} = Astro.props
+const highlight = 'Lasse Jantsch'
+const split_authors = data.authors.split(highlight)
+---
+
+<div class="relative col-start-2 col-span-9 mb-4">
+    <div class="ml-2">
+        <!-- Award -->
+        {'award' in data && data.award && <p class="text-xs text-green-600 dark:text-green-400">{data.award}</p>}
+
+        <!-- Title -->
+        <p class="font-semibold text-sm text-primary dark:text-primary_dark">
+            {data.title}
+        </p>
+
+        <!-- Authors -->
+        <p class="text-sm text-secondary dark:text-secondary_dark italic">
+            {split_authors.map((part:string, index:number) => (
+                <>
+                {index > 0 && <strong>{highlight}</strong>}
+                {part}
+                </>
+            ))}
+        </p>
+
+        <!-- Conference -->
+        <p class="text-xs text-secondary dark:text-secondary_dark">{data.venue}</p>
+
+        <!-- Links -->
+        <div class="flex flex-wrap gap-3 mt-1 text-sm text-primary dark:text-primary_dark">
+            {data.links.map((item: {title:string, link:string}) => (
+                <a href={item.link} class="hover:underline">{item.title}</a>
+            ))}
+        </div>
+    </div>
+</div>
+
+
+############################
+#       Header.astro       #
+############################
+
+---
+import { Moon, Sun } from '@lucide/astro';
+import HeaderLink from './HeaderLink.astro';
+import { SITE_TITLE } from '../data/consts';
+---
+
+<header class="w-full h-[10vh] bg-primary_bg dark:bg-primary_bg_dark">
+  <nav class="max-w-6xl mx-auto flex flex-row items-center justify-between px-6 py-4">
+    <h2 class="text-2xl font-bold text-secondary dark:text-secondary_dark">
+      <a href="/">{SITE_TITLE}</a>
+    </h2>
+    <div class="flex items-center gap-4 text-primary dark:text-white">
+      <!-- <HeaderLink href="/">Home</HeaderLink>
+      <HeaderLink href="/about">About</HeaderLink> -->
+      <button
+        id="dark-toggle"
+        class="ml-4 p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all cursor-pointer"
+        aria-label="Toggle Dark Mode"
+      >
+        <Moon class="w-5 h-5 dark:hidden" />
+        <Sun class="w-5 h-5 hidden dark:block" />
+      </button>
+    </div>
+  </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('dark-toggle');
+    const root = document.documentElement;
+
+    if (!toggle) return; // safety guard
+
+    // Initialize dark mode from localStorage or system preference
+    if (localStorage.theme === 'dark' || 
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      root.classList.add('dark');
+    }
+
+    toggle.addEventListener('click', () => {
+      if (root.classList.contains('dark')) {
+        root.classList.remove('dark');
+        localStorage.theme = 'light';
+      } else {
+        root.classList.add('dark');
+        localStorage.theme = 'dark';
+      }
+    });
+  });
+</script>
+</header>
+
+
+####################################
+#       CvLogoListItem.astro       #
+####################################
+
+---
+const {data} = Astro.props
+---
+
+<div class="flex items-start gap-4">
+    <!-- University Logo -->
+    <div class="w-16 h-16 flex-shrink-0">
+        <img src={data?.logo_path} alt={data.logo_alt} class="rounded-lg w-full h-full object-contain" />
+    </div>
+
+    <!-- Degree Info -->
+    <div class="flex flex-col text-secondary dark:text-secondary_dark">
+        <p class="text-base text-primary dark:text-primary_dark"><strong class="text-lg">{data?.title}</strong> - {data?.note}</p>
+        <p class="text-sm italic text-gray-600 dark:text-gray-400">{data?.line1}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-500">{data?.line2}</p>
+    </div>
+</div>
+
+
+##############################
+#       BaseHead.astro       #
+##############################
+
+---
+// Import the global.css file here so that it is included on
+// all pages through the use of the <BaseHead /> component.
+import '../styles/global.css';
+import { SITE_TITLE } from '../data/consts';
+import FallbackImage from '../assets/profile_picture.jpg'
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	title: string;
+	description: string;
+	image?: ImageMetadata;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const { title, description, image = FallbackImage} = Astro.props;
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+	rel="alternate"
+	type="application/rss+xml"
+	title={SITE_TITLE}
+	href={new URL('rss.xml', Astro.site)}
+/>
+<meta name="generator" content={Astro.generator} />
+
+<!-- Font preloads -->
+<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
+<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image.src, Astro.url)} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+
+
+##############################
+#       BlogPost.astro       #
+##############################
+
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+
+type Props = CollectionEntry<'post'>['data'];
+
+const { title, description, date, updatedDate } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} >
+	<article class="max-w-6xl mx-auto flex flex-col items-center">
+		<div class="prose">
+			<div class="title">
+				<div class="date">
+					<FormattedDate date={date} />
+					{
+						updatedDate && (
+							<div class="last-updated-on">
+								Last updated on <FormattedDate date={updatedDate} />
+							</div>
+						)
+					}
+				</div>
+				<h1>{title}</h1>
+				<hr />
+			</div>
+			<slot />
+		</div>
+		<Footer/>
+	</article>
+
+
+################################
+#       BaseLayout.astro       #
+################################
+
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body class="overflow-hidden h-screen">
+		<Header />
+		<main class="bg-primary_bg dark:bg-primary_bg_dark overflow-hidden">
+            <slot/>
+		</main>
+	</body>
+</html>
+
+
+#########################
+#       consts.ts       #
+#########################
+
+// Place any global data in this file.
+// You can import this data from anywhere in your site by using the `import` keyword.
+
+import cv_data from './cv.json'
+
+// blog
+export const ACTIVATE_BLOG = false // activates the blog section of the website.
+
+// metadata
+export const SITE_TITLE = "LMJ's Profile";
+export const SITE_DESCRIPTION = 'Welcome to my portfolio website!';
+
+// Profile
+export const GREETING = "👋 Hey, I'm Lasse"
+export const INTRODUCTION = "I'm an economist turned computer scientist, currently pursuing my Master's degree in Daegu, South Korea. My research focuses on latent state analysis for reasoning and knowledge extraction in large language models (LLMs), as well as AI applications, particularly in the context of scholarly document processing. Beyond that, I'm also interested in the economic and societal implications of technological advances."
+export const CONTACT_AND_CV = "Pleae contact me at lassejantsch [at] knu.ac.kr and find my comprehensive CV."
+
+
+// Socials
+export const GITHUB = "https://github.com/LasseJantsch"
+export const LINKEDIN = "https://www.linkedin.com/in/lasse-jantsch-6985581a7"
+export const GOOGLESCHOLAR = "https://scholar.google.com/citations?user=FjrsTUUAAAAJ"
+
+// Work Experience
+export const CVITEMS = cv_data
+
+
+###############################
+#       [...slug].astro       #
+###############################
+
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('post');
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+type Props = CollectionEntry<'post'>;
+
+const post = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogPost {...post.data}>
+	<Content />
+</BlogPost>
+
+
+###########################
+#       index.astro       #
+###########################
+
+---
+import { SITE_TITLE, SITE_DESCRIPTION, GREETING, INTRODUCTION, CVITEMS, CONTACT_AND_CV } from '../data/consts';
+import profilePicture from '../assets/profile_picture.jpg'
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+import Socials from '../components/Socials.astro';
+import uhhLogo from '../assets/uhh_logo.svg'
+import knuLogo from '../assets/knu_logo.svg'
+import CvSection from '../components/CvSection.astro';
+import CvListEntry from '../components/CvListEntry.astro';
+import CvLogoListEntry from '../components/CvLogoListEntry.astro';
+import CvTimelineEntry from '../components/CvTimelineEntry.astro';
+---
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} >
+	<section class="max-w-6xl px-50 mx-auto h-[90vh] px-4 py-8 flex flex-col items-center text-center overflow-scroll">
+
+	<!-- Profile Image -->
+	<img
+		src={profilePicture.src}
+		alt="Profile picture of Lasse Jantsch"
+		class="w-60 h-60 rounded-full mb-6 shadow-lg object-cover"
+	/>
+
+	<!-- Heading -->
+	<h1 class="text-4xl text-primary dark:text-primary_dark font-bold mb-4">{GREETING}</h1>
+
+	<!-- Short Intro -->
+	<p class="text-lg mb-2 max-w-xl text-secondary dark:text-secondary_dark">
+		{INTRODUCTION}
+	</p>
+
+	<p class="text-base max-w-xl text-secondary dark:text-secondary_dark">
+		{CONTACT_AND_CV}
+	</p>
+
+	<div class="mt-2 mb-10">
+		<Socials />
+	</div>
+
+	<!-- CV Section -->
+	<div class="w-full text-left space-y-8">
+
+		{CVITEMS.map((item: { title: string, type: string, data: any }) => (
+		<CvSection title={item.title}>
+			{item.type === 'list' ? (
+				<CvListEntry data={item.data} />
+			) : item.type === 'logo-list' ? (
+				<CvLogoListEntry data={item.data} />
+			) : item.type === 'timeline' ? (
+				<CvTimelineEntry data={item.data} />
+			) : (
+			<div></div>
+			)}
+		</CvSection>
+		))}
+	</div>
+	<Footer />
+	</section>
+</BaseLayout>
+
+
+##########################
+#       blog.astro       #
+##########################
+
+---
+import { SITE_TITLE, SITE_DESCRIPTION, ACTIVATE_BLOG } from '../data/consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import ProfileSection from '../components/ProfileSection.astro'
+import PostCard from '../components/PostCard.astro';
+import Footer from '../components/Footer.astro';
+
+// redirect if blog is not activated
+if (!ACTIVATE_BLOG) {
+    return Astro.redirect('/');
+}
+
+const posts = (await getCollection('post')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+---
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} >
+	<div id="layout-container" class="max-w-6xl mx-auto flex flex-row">
+		<section id="profile-section" class="flex flex-col justify-between grow basis-30/100">
+			<ProfileSection/>
+			<Footer/>
+		</section>
+		<section id="blog-section" class="h-[90vh] basis-70/100 overflow-scroll px-4 py-4">
+			{posts.map(post => (
+				<PostCard 
+					title={post.data.title}
+					description={post.data.description}
+					date={post.data.date}
+					updatedDate={post.data.updatedDate}
+					slug={post.data.slug}
+				/>
+			))}
+		</section>
+
+	</div>
+</BaseLayout>

@@ -1,25 +1,6 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
-
-// metadata
-export const SITE_TITLE = "LMJ's Profile";
-export const SITE_DESCRIPTION = 'Welcome to my portfolio website!';
-
-// Profile
-export const GREETING = "👋 Hey, I'm Lasse"
-export const INTRODUCTION = "I'm an economist turned computer scientist, currently pursuing my Master's degree in Daegu, South Korea. My research focuses on latent state analysis for reasoning and knowledge extraction in large language models (LLMs), as well as AI applications, particularly in the context of scholarly document processing. Beyond that, I'm also interested in the economic and societal implications of technological advances."
-export const CONTACT_AND_CV = "Pleae contact me at lassejantsch [at] knu.ac.kr and find my comprehensive CV."
-
-
-// Socials
-export const GITHUB = "https://github.com/LasseJantsch"
-export const LINKEDIN = "https://www.linkedin.com/in/lasse-jantsch-6985581a7"
-export const GOOGLESCHOLAR = "https://scholar.google.com/citations?user=FjrsTUUAAAAJ"
-
-// Work Experience
-export const CVITEMS = [
+[
     {
-        'title': "📄 Publicaitions",
+        "title": "📄 Publications",
         "type": "timeline",
         "data": [
             {
@@ -37,7 +18,7 @@ export const CVITEMS = [
                         {
                             "title": "💻 Code",
                             "link": "https://github.com/lab-paper-code/FineCite"
-                        },
+                        }
                     ]
                 }
             },
@@ -152,7 +133,7 @@ export const CVITEMS = [
             {
                 "title": "Promoter / Fundraiser (Working Student)",
                 "note": "Dialog Direct (Jan 2022 - Jun 2022)"
-            },
+            }
         ]
     },
     {
@@ -191,7 +172,7 @@ export const CVITEMS = [
                     {
                         "title": "🌐 Website",
                         "link": "https://www.techlabs.org/location/hamburg"
-                    },                        
+                    }                        
                 ]
             },
             {
@@ -201,7 +182,7 @@ export const CVITEMS = [
                         {
                             "title": "🎥 Fundraising Video",
                             "link": "https://www.youtube.com/watch?v=Gj-NPJ-GtCQ&ab_channel=BhongolethuFoundation"
-                        },                        
+                        }                        
                     ]
             },
             {
@@ -211,7 +192,7 @@ export const CVITEMS = [
                         {
                             "title": "🌐 Website",
                             "link": "https://bhongolethufoundation.org.za/"
-                        },                         
+                        }                       
                     ]
             }
         ]
