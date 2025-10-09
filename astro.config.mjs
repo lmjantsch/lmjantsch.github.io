@@ -8,7 +8,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'lmjantsch.github.io',
+	site: 'https://lmjantsch.github.io',
 	integrations: [
 		mdx(), 
 		sitemap(),
