@@ -79,7 +79,7 @@
         "type": "logo-list",
         "data": [
             {
-                "logo_path": "./public/knu_logo.svg",
+                "logo_path": "./knu_logo.svg",
                 "logo_alt": "Kyungpook National University Logo",
                 "title": "M.Sc. Computer Science",
                 "note": "Kyungpook National University",
@@ -87,7 +87,7 @@
                 "line2": "2024 - 2026"
             },
             {
-                "logo_path": "./public/uhh_logo.svg",
+                "logo_path": "./uhh_logo.svg",
                 "logo_alt": "University of Hamburg Logo",
                 "title": "B.A. Computer Science",
                 "note": "University of Hamburg",
