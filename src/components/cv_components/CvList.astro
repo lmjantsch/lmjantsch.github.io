@@ -1,0 +1,10 @@
+---
+import { CvListItem } from "./CvListItem";
+
+const {data} = Astro.props
+---
+<ul class="space-y-1">
+    {data.map((item: { title: string; note: string ; details?: string[]; links?: {title:string, link:string}[]}, index:number) => (
+        <CvListItem data = {item} key = {index} client:only="react"/>
+    ))}
+</ul>

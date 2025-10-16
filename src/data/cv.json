@@ -102,7 +102,13 @@
         "data": [
             {
                 "title": "Graduate Research Assistant",
-                "note": "Kyungpook National University (Mar 2024 - Present)"
+                "note": "Kyungpook National University (Mar 2024 - Present)",
+                "details": [
+                    "Led and first authored ACL 2025 publishing project on citation classification in second semester of master.",
+                    "Improved citation classification by 25% by managing the annotation of dataset and implementing fine-grained modeling approach.",
+                    "Received Best Poster Award at KCC 2024 for contrastive learning approach for citation classification.",
+                    "Mentored first domestic publications of two research assistants on RAG and Direct Preference Optimization."
+                ]
             },
             {
                 "title": "Research Intern",
@@ -116,7 +122,12 @@
         "data": [
             {
                 "title": "Data Science Engineer (Working Student)",
-                "note": "Yoma Solutions (Oct 2023 - Feb 2024)"
+                "note": "Yoma Solutions (Oct 2023 - Feb 2024)",
+                "details":[
+                    "Created data access to 20 million rows by implementing automated cleaning and normalization pipeline.",
+                    "Improved data quality by 20% by structured data exploration and collaboration with domain experts.",
+                    "Collaborated on the creation of new data warehouse architecture."
+                ]
             },
             {
                 "title": "Business Development Assistant (Working Student)",
@@ -124,7 +135,11 @@
             },
             {
                 "title": "Technical Project Manager (Working Student)",
-                "note": "bCyber (Dec 2022 - Jun 2022)"
+                "note": "bCyber (Dec 2022 - Jun 2022)",
+                "details": [
+                    "Secured municipal founding for an extended prototype after the ITS City Hack win with accessibility app.",
+                    "Managed development of extended prototype and cooperation with external stakeholders."
+                ]
             },
             {
                 "title": "Web / Mobile Developer",
@@ -145,7 +160,7 @@
                 "note": "Mar 2024 - Present"
             },
             {
-                "title": "KINGS: Kyungpook National University International Graduate Scholarship",
+                "title": "Kyungpook National University International Graduate Scholarship",
                 "note": "Mar 2024 - Present"
             },
             {
@@ -168,6 +183,10 @@
             {
                 "title": "Techlabs Hamburg",
                 "note": "Partnership Management Team (Sep 2021 - Sep 2022)",
+                "details": [
+                    "Nurtured relationship and secured continued funding of two corporate partners for pro-bono tech education programs.",
+                    "Planned and executed partner Hackathon."
+                ],
                 "links": [
                     {
                         "title": "🌐 Website",
@@ -178,6 +197,9 @@
             {
                 "title": "Bhongolethu Foundation",
                 "note": "Fundraising for Grade 4 Class Room (Sep 2019 - Apr 2020)",
+                "details":[
+                    "Raised 15000€ for 4th grade class room for South African minority school after 7 month volunteering."
+                ],
                 "links": [
                         {
                             "title": "🎥 Fundraising Video",

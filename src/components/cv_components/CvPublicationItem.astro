@@ -29,7 +29,7 @@ const split_authors = data.authors.split(highlight)
 
         <!-- Links -->
         <div class="flex flex-wrap gap-3 mt-1 text-sm text-primary dark:text-primary_dark">
-            {data.links.map((item: {title:string, link:string}) => (
+            {data.links.map((item: {title:string, link:string}, index:number) => (
                 <a href={item.link} class="hover:underline">{item.title}</a>
             ))}
         </div>

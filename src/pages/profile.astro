@@ -1,0 +1,59 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION, GREETING, INTRODUCTION, CVITEMS, CONTACT_AND_CV } from '../data/consts';
+import profilePicture from '../assets/profile_picture.jpg'
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+import Socials from '../components/Socials.astro';
+import uhhLogo from '../assets/uhh_logo.svg'
+import knuLogo from '../assets/knu_logo.svg'
+import CvSection from '../components/cv_components/CvSection.astro';
+import CvList from '../components/cv_components/CvList.astro';
+import CvLogoList from '../components/cv_components/CvLogoList.astro';
+import CvTimeline from '../components/cv_components/CvTimeline.astro';
+---
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} >
+	<section class="max-w-3xl mx-auto px-4 py-8 flex flex-col items-center text-center min-h-[90vh]">
+
+	<!-- Profile Image -->
+	<img
+		src={profilePicture.src}
+		alt="Profile picture of Lasse Jantsch"
+		class="w-60 h-60 rounded-full mb-6 shadow-lg object-cover"
+	/>
+
+	<!-- Heading -->
+	<h1 class="text-4xl text-primary dark:text-primary_dark font-bold mb-4">{GREETING}</h1>
+
+	<!-- Short Intro -->
+	<p class="text-lg mb-2 max-w-xl text-secondary dark:text-secondary_dark">
+		{INTRODUCTION}
+	</p>
+
+	<p class="text-base max-w-xl text-secondary dark:text-secondary_dark">
+		{CONTACT_AND_CV}
+	</p>
+
+	<div class="mt-2 mb-10">
+		<Socials />
+	</div>
+
+	<!-- CV Section -->
+	<div class="w-full text-left space-y-8">
+
+		{CVITEMS.map((item: { title: string, type: string, data: any }, index: number) => (
+		<CvSection title={item.title} key={index}>
+			{item.type === 'list' ? (
+				<CvList data={item.data}/>
+			) : item.type === 'logo-list' ? (
+				<CvLogoList data={item.data} />
+			) : item.type === 'timeline' ? (
+				<CvTimeline data={item.data} />
+			) : (
+			<div></div>
+			)}
+		</CvSection>
+		))}
+	</div>
+	<Footer />
+	</section>
+</BaseLayout>

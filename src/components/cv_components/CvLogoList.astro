@@ -1,0 +1,10 @@
+---
+import CvLogoListItem from "./CvLogoListItem.astro"
+
+const {data} = Astro.props
+---
+<div class="space-y-6">
+    {data.map((item: {logo_path:string, logo_alt:string, title:string, note:string, line1:string, line2:string}, index:number) => (
+        <CvLogoListItem data={item} key={index}/>
+    ))}
+</div>

@@ -1,7 +1,7 @@
 ---
 import { Moon, Sun } from '@lucide/astro';
 import HeaderLink from './HeaderLink.astro';
-import { SITE_TITLE } from '../data/consts';
+import { SITE_TITLE, ACTIVATE_BLOG } from '../data/consts';
 ---
 
 <header class="w-full h-[10vh] bg-primary_bg dark:bg-primary_bg_dark">
@@ -10,8 +10,8 @@ import { SITE_TITLE } from '../data/consts';
       <a href="/">{SITE_TITLE}</a>
     </h2>
     <div class="flex items-center gap-4 text-primary dark:text-white">
-      <!-- <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink> -->
+      {ACTIVATE_BLOG && <HeaderLink href="/">Blog</HeaderLink>
+      <HeaderLink href="/profile">Profile</HeaderLink>}
       <button
         id="dark-toggle"
         class="ml-4 p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all cursor-pointer"

@@ -1,59 +1,46 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, GREETING, INTRODUCTION, CVITEMS, CONTACT_AND_CV } from '../data/consts';
-import profilePicture from '../assets/profile_picture.jpg'
+import { SITE_TITLE, SITE_DESCRIPTION, ACTIVATE_BLOG } from '../data/consts';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import ProfileSection from '../components/ProfileSection.astro'
+import PostCard from '../components/PostCard.astro';
 import Footer from '../components/Footer.astro';
-import Socials from '../components/Socials.astro';
-import uhhLogo from '../assets/uhh_logo.svg'
-import knuLogo from '../assets/knu_logo.svg'
-import CvSection from '../components/CvSection.astro';
-import CvListEntry from '../components/CvListEntry.astro';
-import CvLogoListEntry from '../components/CvLogoListEntry.astro';
-import CvTimelineEntry from '../components/CvTimelineEntry.astro';
+
+// redirect if blog is not activated
+if (!ACTIVATE_BLOG) {
+    return Astro.redirect('/profile');
+}
+
+const posts = (await getCollection('post')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
 ---
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} >
-	<section class="max-w-3xl mx-auto px-4 py-8 flex flex-col items-center text-center min-h-[90vh]">
+	<div id="layout-container" class="max-w-6xl mx-auto flex flex-col lg:flex-row">
+		{/* Left Column: Profile (Static on Desktop) */}
+		<section id="profile-section" class="w-full lg:w-1/3 flex-shrink-0 px-4 py-4 lg:h-[90vh] flex flex-col">
+			<ProfileSection/>
+			<div class="hidden lg:flex mt-auto">
+				<Footer/>
+			</div>
+		</section>
 
-	<!-- Profile Image -->
-	<img
-		src={profilePicture.src}
-		alt="Profile picture of Lasse Jantsch"
-		class="w-60 h-60 rounded-full mb-6 shadow-lg object-cover"
-	/>
-
-	<!-- Heading -->
-	<h1 class="text-4xl text-primary dark:text-primary_dark font-bold mb-4">{GREETING}</h1>
-
-	<!-- Short Intro -->
-	<p class="text-lg mb-2 max-w-xl text-secondary dark:text-secondary_dark">
-		{INTRODUCTION}
-	</p>
-
-	<p class="text-base max-w-xl text-secondary dark:text-secondary_dark">
-		{CONTACT_AND_CV}
-	</p>
-
-	<div class="mt-2 mb-10">
-		<Socials />
+		{/* Right Column: Blog Posts (Scrollable on Desktop) */}
+		<section id="blog-section" class="w-full lg:w-2/3 lg:h-[90vh] lg:overflow-y-auto px-4 py-4">
+			{posts.map((post, index) => (
+				<PostCard 
+					title={post.data.title}
+					description={post.data.description}
+					date={post.data.date}
+					updatedDate={post.data.updatedDate}
+					slug={post.data.slug}
+					key={index}
+				/>
+			))}
+			{/* Footer for mobile view, inside the main content area */}
+			<div class="block lg:hidden pt-4">
+				<Footer/>
+			</div>
+		</section>
 	</div>
-
-	<!-- CV Section -->
-	<div class="w-full text-left space-y-8">
-
-		{CVITEMS.map((item: { title: string, type: string, data: any }) => (
-		<CvSection title={item.title}>
-			{item.type === 'list' ? (
-				<CvListEntry data={item.data} />
-			) : item.type === 'logo-list' ? (
-				<CvLogoListEntry data={item.data} />
-			) : item.type === 'timeline' ? (
-				<CvTimelineEntry data={item.data} />
-			) : (
-			<div></div>
-			)}
-		</CvSection>
-		))}
-	</div>
-	<Footer />
-	</section>
 </BaseLayout>

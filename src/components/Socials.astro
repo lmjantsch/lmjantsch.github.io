@@ -1,21 +1,17 @@
 ---
-import { Linkedin, Github, GraduationCap } from '@lucide/astro';
-import { LINKEDIN, GITHUB, GOOGLESCHOLAR } from '../data/consts';
+import { Linkedin, Github, GraduationCap, SquareArrowOutUpRight } from '@lucide/astro';
+import { SOCIALS } from '../data/consts';
 ---
 
 <div class="flex justify-around space-x-4 text-secondary dark:secondary_dark">
-    <!-- LinkedIn -->
-    <a href={LINKEDIN} aria-label="LinkedIn" class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
-        <Linkedin class="w-6 h-6" />
-    </a>
-
-    <!-- GitHub -->
-    <a href={GITHUB} aria-label="GitHub" class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
-        <Github class="w-6 h-6" />
-    </a>
-
-    <!-- Google Scholar -->
-    <a href={GOOGLESCHOLAR} aria-label="Google Scholar" class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
-        <GraduationCap class="w-6 h-6" />
-    </a>    
+    {SOCIALS.map((item:{type:string, link:string}, index:number) => (
+        <a href={item.link} aria-label="LinkedIn" class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
+            {
+                item.type === 'linkedin' ? <Linkedin class="w-6 h-6"/>:
+                item.type === 'github' ? <Github class="w-6 h-6"/>:
+                item.type === 'googlescholar' ? <GraduationCap class="w-6 h-6"/>:
+                <SquareArrowOutUpRight class="w-6 h-6"/>
+            }
+        </a>
+    ))}
 </div>

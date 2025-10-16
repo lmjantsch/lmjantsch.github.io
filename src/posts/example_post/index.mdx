@@ -1,0 +1,115 @@
+---
+title: "MDX Feature Showcase: A Comprehensive Test"
+description: "An extensive demonstration of MDX capabilities, from basic Markdown to interactive React components, designed to test any layout and styling."
+date: 2025-10-26
+slug: "/example-post"
+author: "Gemini"
+tags: ["MDX", "Astro", "React", "Markdown", "Testing"]
+draft: false
+---
+import { Counter, Note } from './components'
+
+export const metadata = {
+  version: '1.0.0',
+  reviewDate: '2026-10-26'
+};
+
+This post demonstrates the full power of MDX. The current date is {new Date().toLocaleDateString()}.
+We've also exported a `metadata` object from this file, which you can see has a version of **{metadata.version}**.
+
+---
+
+## Basic Markdown Elements
+
+This section covers the fundamentals. You can have **bold text**, *italic text*, and ~~strikethrough text~~. You can also combine them, like ***this***. Don't forget `inline code snippets`.
+
+This is a link to the [official MDX documentation](https://mdxjs.com/).
+
+> Blockquotes are perfect for highlighting quotes or important notes. They can span multiple lines and contain other formatting elements like **bold** text.
+
+## Lists and Tasks
+
+### Unordered List
+- Item A
+- Item B
+  - Nested Item B.1
+  - Nested Item B.2
+- Item C
+
+### Ordered List
+1. First step
+2. Second step
+3. Third step
+   1. Sub-step 3a
+   2. Sub-step 3b
+
+### Task List
+- [x] Complete initial setup
+- [x] Write comprehensive test file
+- [ ] Deploy to production
+
+## Advanced Markdown: Tables and More
+
+Tables are essential for displaying structured data.
+
+| Header 1      | Header 2      | Header 3 |
+|---------------|:-------------:|----------|
+| Cell 1, Col 1 | Centered Text | 123      |
+| Cell 2, Col 1 | More Text     | 456      |
+| Cell 3, Col 1 | And More...   | 789      |
+
+Here is a footnote[^1]. And another one[^longnote].
+
+[^1]: This is the footnote text.
+[^longnote]: Footnotes can also be longer and contain multiple lines of text.
+
+You can also include images:
+
+![A placeholder image showing a gray box with the text 'MDX Logo Placeholder'](https://placehold.co/600x300/e2e8f0/4a5568?text=MDX+Logo+Placeholder))
+*A caption for the image above.*
+
+## Code Blocks Showcase
+
+This is where MDX truly shines. You can embed interactive React components directly into your Markdown.
+
+### Counter Component
+
+<Counter client:load/>
+
+### Note Component
+
+You can create styled callouts or notes to draw attention to specific content.
+
+<Note>
+  This is an **info** note. You can pass *Markdown* directly as children to a React component!
+</Note>
+
+<Note type="warning">
+  This is a **warning** note. Be careful with this feature, as it can be powerful but also complex.
+</Note>
+
+## Using Raw HTML
+
+Sometimes you just need to drop down to raw HTML. The `<details>` element is a great example.
+
+<details>
+  <summary>Click to expand for more details</summary>
+  <p>
+    This content is hidden by default. It's useful for FAQs or supplementary information that shouldn't clutter the main content. You can put any HTML or Markdown content in here.
+  </p>
+</details>
+
+## Embedded Content
+
+You can easily embed content from other sources using iframes.
+
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', maxWidth: '100%', background: '#000', margin: '2em 0' }}>
+  <iframe
+    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+    title="Embedded YouTube video"
+  ></iframe>
+</div>
