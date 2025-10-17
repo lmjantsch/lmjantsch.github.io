@@ -1,7 +1,6 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, GREETING, INTRODUCTION, CVITEMS, CONTACT_AND_CV } from '../data/consts';
+import {GREETING, INTRODUCTION, CVITEMS, CONTACT_AND_CV } from '../data/consts';
 import profilePicture from '../assets/profile_picture.jpg'
-import BaseLayout from '../layouts/BaseLayout.astro';
 import Footer from '../components/Footer.astro';
 import Socials from '../components/Socials.astro';
 import uhhLogo from '../assets/uhh_logo.svg'
@@ -11,7 +10,7 @@ import CvList from '../components/cv_components/CvList.astro';
 import CvLogoList from '../components/cv_components/CvLogoList.astro';
 import CvTimeline from '../components/cv_components/CvTimeline.astro';
 ---
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} >
+<div>
 	<section class="max-w-3xl mx-auto px-4 py-8 flex flex-col items-center text-center min-h-[90vh]">
 
 	<!-- Profile Image -->
@@ -56,4 +55,4 @@ import CvTimeline from '../components/cv_components/CvTimeline.astro';
 	</div>
 	<Footer />
 	</section>
-</BaseLayout>
+</div>

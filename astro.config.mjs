@@ -25,7 +25,7 @@ export default defineConfig({
 		}
   	},
 	// redirect if blog is not activated
-	redirects: !ACTIVATE_BLOG && { 
-    	"/": "/profile",
-  	},
+	// redirects: !ACTIVATE_BLOG && { 
+    // 	"/": "/profile",
+  	// },
 });

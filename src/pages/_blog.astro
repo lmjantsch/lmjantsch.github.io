@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import ProfileSection from '../components/ProfileSection.astro'
+import PostCard from '../components/PostCard.astro';
+import Footer from '../components/Footer.astro';
+
+const posts = (await getCollection('post')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+<div id="layout-container" class="max-w-6xl mx-auto flex flex-col lg:flex-row">
+    {/* Left Column: Profile (Static on Desktop) */}
+    <section id="profile-section" class="w-full lg:w-1/3 flex-shrink-0 px-4 py-4 lg:h-[90vh] flex flex-col">
+        <ProfileSection/>
+        <div class="hidden lg:flex mt-auto">
+            <Footer/>
+        </div>
+    </section>
+
+    {/* Right Column: Blog Posts (Scrollable on Desktop) */}
+    <section id="blog-section" class="w-full lg:w-2/3 lg:h-[90vh] lg:overflow-y-auto px-4 py-4">
+        {posts.map((post, index) => (
+            <PostCard 
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.date}
+                updatedDate={post.data.updatedDate}
+                slug={post.data.slug}
+                key={index}
+            />
+        ))}
+        {/* Footer for mobile view, inside the main content area */}
+        <div class="block lg:hidden pt-4">
+            <Footer/>
+        </div>
+    </section>
+</div>

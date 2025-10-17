@@ -1,0 +1,21 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION, ACTIVATE_BLOG } from '../data/consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogPage from './_blog.astro'
+import ProfilePage from './_profile.astro'
+
+export async function getStaticPaths() {
+	return [
+		{params: {page: undefined}},
+		{params: {page: 'profile'}},
+	]
+}
+const {page} = Astro.params
+---
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} >
+	{ACTIVATE_BLOG?
+		page === undefined && <BlogPage /> ||
+		page === 'profile' && <ProfilePage />:
+		<ProfilePage />
+	}
+</BaseLayout>
