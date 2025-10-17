@@ -1,15 +1,10 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, ACTIVATE_BLOG } from '../data/consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../data/consts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import ProfileSection from '../components/ProfileSection.astro'
 import PostCard from '../components/PostCard.astro';
 import Footer from '../components/Footer.astro';
-
-// redirect if blog is not activated
-if (!ACTIVATE_BLOG) {
-    return Astro.redirect('/profile');
-}
 
 const posts = (await getCollection('post')).sort(
 	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
