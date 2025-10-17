@@ -6,6 +6,8 @@ A clean, modern, and responsive template for creating your academic resume and p
 
 This template is designed to be easily customizable, allowing you to showcase your publications, education, experience, and more with a professional look.
 
+**You can find a life demo at [lmjantsch.github.io](https://lmjantsch.github.io/)**
+
 
 ## Features
 
