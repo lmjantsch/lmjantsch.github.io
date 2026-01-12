@@ -24,7 +24,7 @@ export const CONTACT_AND_CV = "Please contact me at lassejantsch [at] web.de."
 export const SOCIALS = [
     {
         "type":'github', 
-        "link": "https://github.com/LasseJantsch"
+        "link": "https://github.com/lmjantsch"
     },
     {
         "type":'linkedin', 
