@@ -4,8 +4,8 @@ import { SOCIALS } from '../data/consts';
 ---
 
 <div class="flex justify-around space-x-4 text-secondary dark:secondary_dark">
-    {SOCIALS.map((item:{type:string, link:string}, index:number) => (
-        <a href={item.link} aria-label="LinkedIn" class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
+    {SOCIALS.map((item:{type:string, label?:string, link:string}, index:number) => (
+        <a href={item.link} aria-label={item.label ?? item.type} class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
             {
                 item.type === 'linkedin' ? <Linkedin class="w-6 h-6"/>:
                 item.type === 'github' ? <Github class="w-6 h-6"/>:

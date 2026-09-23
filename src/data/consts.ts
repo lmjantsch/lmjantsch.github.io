@@ -1,92 +1,49 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
+// Global site data. CV content lives in cv.json (see CLAUDE.md for its schema);
+// this file holds site metadata, the profile intro, and outbound links.
 
-import cv_data from './cv.json'
-
-// blog
-export const ACTIVATE_BLOG = false // activates the blog section of the website.
+// Shows the news feed at "/" and moves the CV to "/profile".
+export const ACTIVATE_BLOG = true;
 
 // metadata
 export const SITE_TITLE = "LMJ's Profile"; // title of page
 export const SITE_DESCRIPTION = "Lasse Jantsch's my portfolio website!"; // description of page
-export const IP_OWNER = 'Lasse Jantsch' // put your name
+export const IP_OWNER = 'Lasse Jantsch'; // put your name
+
+// Name used to bold your own entry in author lists (set in cv.json -> meta.authorName).
+// Middle initials are ignored when matching, so "Lasse M. Jantsch" still resolves to you.
+export { AUTHOR_NAME } from '../lib/cv.mjs';
+
+// Generated from cv.json by `yarn cv:pdf` — see scripts/generate-cv-tex.mjs.
+export const CV_PDF_PATH = '/cv.pdf';
 
 // Profile [top of profile page]
 // change the profile picture in src/assets/profile_picture
-export const GREETING = "👋 Hey, I'm Lasse"
-export const INTRODUCTION = "A computer scientist with a background in economics specializing in the interpretability and reliability of Large Language Models. My research focuses on improving language models as reliable, large-scale text processing tools by leveraging the models internals for information extraction and task adaptation. Through my background in economics I ground my research not only in technical facination, but also in the social and economical implications of more reliable AI technology."
-export const CONTACT_AND_CV = "Please contact me at lassejantsch [at] web.de."
+export const GREETING = "👋 Hey, I'm Lasse";
+export const INTRODUCTION =
+	'A computer scientist with a background in economics specializing in the interpretability and reliability of Large Language Models. My research focuses on improving language models as reliable, large-scale text processing tools by leveraging the models internals for information extraction and task adaptation. Through my background in economics I ground my research not only in technical facination, but also in the social and economical implications of more reliable AI technology.';
+export const CONTACT_AND_CV = 'Please contact me at lassejantsch [at] web.de.';
 
-
-// Socials:
-// Must have 'type' and 'link' property. 'github', 'linkedin', and 'googlescholar' have designated icons.
-// All other types will have a default icon. If you want a custom icon add it to src/components/Socials.astro.
+// Socials / outbound links.
+// 'type' selects the icon: 'github', 'linkedin', 'googlescholar' have designated
+// icons, anything else falls back to a generic external-link icon (add your own
+// in src/components/Socials.astro). 'label' is used for the accessible name.
 export const SOCIALS = [
-    {
-        "type":'github', 
-        "link": "https://github.com/lmjantsch"
-    },
-    {
-        "type":'linkedin', 
-        "link": "https://www.linkedin.com/in/lasse-jantsch-6985581a7"
-    },
-    {
-        "type":'googlescholar', 
-        "link": "https://scholar.google.com/citations?user=FjrsTUUAAAAJ"
-    }
-]
-
-// Work Experience
-// add details in cv.json 
-// Each cv_data item should have 'title', 'type', and 'data'. The different types expect different data.
-// Type 'list':
-// data: [
-//      {
-//          'title': "bold part of list item",
-//          'note': "second part of the first line of the list item",
-//          (optional properties)
-//          'details': [ 
-//              'optional: list of bullet points hidden in toggle'
-//          ],
-//          'links': [
-//              {
-//                  'title': 'displayed string',
-//                  'link': 'link string'
-//              }
-//          ]
-//      }
-//]
-// Type 'logo-list'
-// "data": [
-//     {
-//         "logo_path": "Path of logo svg (ex: ./knu_logo.svg for public/knu_logo.svg). Must be in the ppublic folder",
-//         "logo_alt": "Alt text for logo (ex: Kyungpook National University Logo)",
-//         "title": "Bold part of logo list",
-//         "note": "Not bold part in first line",
-//         "line1": "Second Line (ex: Focus: Natural Language Processing, Deep Learning)",
-//         "line2": "Thid Line (ex: 2024 - 2026)"
-//     },
-// ]
-//Type 'timeline':
-// "data": [
-//     {
-//         "year":2025,
-//         "data": {
-//             "award": null,
-//             "title": "FineCite: A New Framework For Fine-Grained Citation Context Analysis",
-//             "authors": "Lasse Jantsch, Dong-Jae Koh, Seonghwan Yoon, Jisu Lee, Anne Lauscher, Young-Kyoon Suh",
-//             "venue": "Finding of the Association for Computational Linguistics: ACL 2025",
-//             "links": [
-//                 {
-//                     "title": "📄 Paper",
-//                     "link": "https://aclanthology.org/2025.findings-acl.1259/"
-//                 },                        
-//                 {
-//                     "title": "💻 Code",
-//                     "link": "https://github.com/lab-paper-code/FineCite"
-//                 }
-//             ]
-//         }
-//     },
-// ]
-export const CVITEMS = cv_data
+	{
+		type: 'github',
+		label: 'GitHub',
+		link: 'https://github.com/lmjantsch',
+	},
+	{
+		type: 'linkedin',
+		label: 'LinkedIn',
+		link: 'https://www.linkedin.com/in/lasse-jantsch-6985581a7',
+	},
+	{
+		type: 'googlescholar',
+		label: 'Google Scholar',
+		link: 'https://scholar.google.com/citations?user=FjrsTUUAAAAJ',
+	},
+	// Add your writing platforms here once the profiles exist, e.g.
+	// { type: 'lesswrong', label: 'LessWrong', link: 'https://www.lesswrong.com/users/<you>' },
+	// { type: 'substack', label: 'Substack', link: 'https://<you>.substack.com' },
+];

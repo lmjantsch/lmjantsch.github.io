@@ -20,6 +20,14 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
+      - name: Install Tectonic (builds public/cv.pdf from src/data/cv.json)
+        run: |
+          set -euo pipefail
+          url=$(curl -fsSL https://api.github.com/repos/tectonic-typesetting/tectonic/releases/latest \
+            | grep -o 'https://[^"]*x86_64-unknown-linux-musl\.tar\.gz' | head -1)
+          test -n "$url"
+          curl -fsSL "$url" | sudo tar xz -C /usr/local/bin tectonic
+          tectonic --version
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         # with:

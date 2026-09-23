@@ -1,0 +1,50 @@
+---
+import { formatRange, startValue } from '../../lib/cv.mjs';
+
+const { items } = Astro.props;
+const sorted = [...items].sort((a: any, b: any) => startValue(b) - startValue(a));
+---
+<ol class="space-y-6">
+	{sorted.map((item: any) => (
+		<li class="flex items-start gap-4">
+			{item.logo && (
+				<div class="h-16 w-16 shrink-0">
+					<img src={item.logo} alt={item.logoAlt ?? ''} class="h-full w-full rounded-lg object-contain" />
+				</div>
+			)}
+			<div class="min-w-0">
+				<p class="text-primary dark:text-primary_dark">
+					<strong class="text-lg">{item.degree}</strong>
+					<span class="text-base text-secondary dark:text-secondary_dark"> — {item.org}</span>
+				</p>
+				<p class="text-xs text-secondary dark:text-secondary_dark">
+					{[formatRange(item.start, item.end), item.location].filter(Boolean).join(' · ')}
+				</p>
+				{item.advisor && (
+					<p class="mt-1 text-sm italic text-secondary dark:text-secondary_dark">Advisor: {item.advisor}</p>
+				)}
+				{item.thesis && (
+					<p class="mt-1 text-sm text-secondary dark:text-secondary_dark">
+						<span class="italic">Thesis:</span> {item.thesis}
+					</p>
+				)}
+				{item.gpa && (
+					<p class="text-xs text-gray-500 dark:text-gray-500">{item.gpa.scale}: {item.gpa.value}</p>
+				)}
+				{item.sub?.length > 0 && (
+					<ul class="mt-2 space-y-1 border-l-2 border-secondary_bg dark:border-secondary_bg_dark pl-3">
+						{item.sub.map((sub: any) => (
+							<li>
+								<p class="text-sm text-primary dark:text-primary_dark">
+									<strong>{sub.title}</strong>
+									<span class="text-xs text-secondary dark:text-secondary_dark"> — {formatRange(sub.start, sub.end)}</span>
+								</p>
+								{sub.note && <p class="text-xs italic text-secondary dark:text-secondary_dark">{sub.note}</p>}
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+		</li>
+	))}
+</ol>

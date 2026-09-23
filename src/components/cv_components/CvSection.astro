@@ -1,9 +1,23 @@
 ---
-const {title} = Astro.props
+interface Props {
+	title: string;
+	icon?: string;
+	note?: string;
+	display?: 'featured' | 'default' | 'compact';
+	id?: string;
+}
+
+const { title, icon, note, display = 'default', id } = Astro.props;
+
+const headingSize = display === 'compact' ? 'text-xl' : 'text-2xl';
+const spacing = display === 'compact' ? 'mb-7' : 'mb-10';
 ---
-<div class="mb-10">
-    <h2 class="text-2xl font-semibold textmb-2 text-primary dark:text-primary_dark">{title}</h2>
-    <div class="my-4">
-        <slot />
-    </div>
-</div>
+<section id={id} class={spacing}>
+	<h2 class={`${headingSize} font-semibold text-primary dark:text-primary_dark scroll-mt-20`}>
+		{icon && <span class="mr-1.5" aria-hidden="true">{icon}</span>}{title}
+	</h2>
+	{note && <p class="mt-1 text-xs text-secondary dark:text-secondary_dark">{note}</p>}
+	<div class="mt-4">
+		<slot />
+	</div>
+</section>

@@ -1,0 +1,21 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+
+export async function getStaticPaths() {
+	// Only writeups have a body to render; external items and notes live in the feed.
+	const writeups = (await getCollection('news')).filter((entry) => entry.data.kind === 'writeup');
+	return writeups.map((entry) => ({
+		params: { slug: entry.id },
+		props: entry,
+	}));
+}
+type Props = CollectionEntry<'news'>;
+
+const entry = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BlogPost {...entry.data}>
+	<Content />
+</BlogPost>

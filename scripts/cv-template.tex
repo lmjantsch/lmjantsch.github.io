@@ -1,0 +1,70 @@
+% Shomir Wilson's LaTeX CV Template for Graduate Students
+% Version 2.0 (2025-05-06)
+% I provide this CV template as-is and cannot provide support for it.
+% For more about graduate school, research, and academic jobs, see my advice pages at https://shomir.net/advice.
+
+\documentclass[11pt]{article}
+
+\usepackage{enumitem}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tabularx}
+\usepackage{hyphenat}
+\usepackage{color}
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{--}
+\usepackage{fancyhdr}
+\usepackage{endnotes}
+\usepackage[letterpaper,top=1in,bottom=1in,left=1in,right=1in,marginparwidth=1.75cm]{geometry}
+\usepackage{xcolor}
+
+\hypersetup{
+    colorlinks, % Remove cyan boxes around hyperlinks
+    urlcolor={blue}, % Make hyperlinks blue
+}
+
+% This prevents the current date from appearing in the title block 
+\date{}
+
+% This puts the current date in the header; that way people know when you created the CV copy that they're viewing
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[R]{Updated \today}
+
+\newif\ifEndNotes
+\EndNotestrue % Comment this line out to remove the endnotes
+
+\makeatletter
+\ifEndNotes
+\else
+  \let\endnote\@gobble
+  \let\theendnotes\relax
+\fi
+\makeatother
+
+\newcommand{\abbr}[1]{(\textbf{#1})} % I use this in a few places for conference abbreviations
+
+\begin{document}
+
+% \newsectionwidth{0pt} % Stops section indenting
+
+\raggedright % This is better for readability than justified text
+
+\title{\Huge{\textbf{Lasse Marten Jantsch}}}
+
+\author{\small \href{mailto:lassejantsch@knu.ac.kr}{E-Mail} --- \href{https://linkedin.com/in/lasse-jantsch}{LinkedIn} --- \href{https://scholar.google.com/citations?user=FjrsTUUAAAAJ}{Google Scholar} --- \href{lmjantsch.github.io}{Personal Website}}
+
+\maketitle
+\thispagestyle{fancy}
+
+\thispagestyle{fancy} % Make the title block on the first page
+
+
+%% ---------------------------------------------------------------------------
+%% Everything below is GENERATED from src/data/cv.json by scripts/generate-cv-tex.mjs.
+%% Edit the preamble above to restyle the CV; edit cv.json to change content.
+%% ---------------------------------------------------------------------------
+%%CV-BODY%%
+
+\end{document}

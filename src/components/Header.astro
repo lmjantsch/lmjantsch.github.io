@@ -10,8 +10,8 @@ import { SITE_TITLE, ACTIVATE_BLOG } from '../data/consts';
       <a href="/">{SITE_TITLE}</a>
     </h2>
     <div class="flex items-center gap-4 text-primary dark:text-white">
-      {ACTIVATE_BLOG && <HeaderLink href="/">Blog</HeaderLink>
-      <HeaderLink href="/profile">Profile</HeaderLink>}
+      {ACTIVATE_BLOG && <HeaderLink href="/">News</HeaderLink>}
+      <HeaderLink href="/profile">Profile</HeaderLink>
       <button
         id="dark-toggle"
         class="ml-4 p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all cursor-pointer"

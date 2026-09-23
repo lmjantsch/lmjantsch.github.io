@@ -1,58 +1,67 @@
 ---
-import {GREETING, INTRODUCTION, CVITEMS, CONTACT_AND_CV } from '../data/consts';
-import profilePicture from '../assets/profile_picture.jpg'
+import { GREETING, INTRODUCTION, CONTACT_AND_CV, CV_PDF_PATH } from '../data/consts';
+import { getSections } from '../lib/cv.mjs';
+import profilePicture from '../assets/profile_picture.jpg';
+import { FileText } from '@lucide/astro';
 import Footer from '../components/Footer.astro';
 import Socials from '../components/Socials.astro';
-import uhhLogo from '../assets/uhh_logo.svg'
-import knuLogo from '../assets/knu_logo.svg'
 import CvSection from '../components/cv_components/CvSection.astro';
-import CvList from '../components/cv_components/CvList.astro';
-import CvLogoList from '../components/cv_components/CvLogoList.astro';
-import CvTimeline from '../components/cv_components/CvTimeline.astro';
+import CvPublications from '../components/cv_components/CvPublications.astro';
+import CvExperience from '../components/cv_components/CvExperience.astro';
+import CvEducation from '../components/cv_components/CvEducation.astro';
+import CvSkills from '../components/cv_components/CvSkills.astro';
+import CvCompactList from '../components/cv_components/CvCompactList.astro';
+
+const sections = getSections('web');
 ---
 <div>
-	<section class="max-w-3xl mx-auto px-4 py-8 flex flex-col items-center text-center min-h-[90vh]">
+	<section class="mx-auto flex min-h-[90vh] max-w-3xl flex-col px-4 py-8">
 
-	<!-- Profile Image -->
-	<img
-		src={profilePicture.src}
-		alt="Profile picture of Lasse Jantsch"
-		class="w-60 h-60 rounded-full mb-6 shadow-lg object-cover"
-	/>
+		<!-- Intro -->
+		<div class="flex flex-col items-center text-center">
+			<img
+				src={profilePicture.src}
+				alt={`Profile picture of ${GREETING.replace(/^[^A-Za-z]*/, '')}`}
+				class="mb-6 h-60 w-60 rounded-full object-cover shadow-lg"
+			/>
 
-	<!-- Heading -->
-	<h1 class="text-4xl text-primary dark:text-primary_dark font-bold mb-4">{GREETING}</h1>
+			<h1 class="mb-4 text-4xl font-bold text-primary dark:text-primary_dark">{GREETING}</h1>
 
-	<!-- Short Intro -->
-	<p class="text-lg mb-2 max-w-xl text-secondary dark:text-secondary_dark">
-		{INTRODUCTION}
-	</p>
+			<p class="mb-2 max-w-xl text-lg text-secondary dark:text-secondary_dark">{INTRODUCTION}</p>
+			<p class="max-w-xl text-base text-secondary dark:text-secondary_dark">{CONTACT_AND_CV}</p>
 
-	<p class="text-base max-w-xl text-secondary dark:text-secondary_dark">
-		{CONTACT_AND_CV}
-	</p>
+			<div class="mt-2">
+				<Socials />
+			</div>
 
-	<div class="mt-2 mb-10">
-		<Socials />
-	</div>
+			<a
+				href={CV_PDF_PATH}
+				class="mt-4 inline-flex items-center gap-2 rounded-full bg-secondary_bg px-4 py-2 text-sm text-primary transition-transform hover:scale-[1.03] dark:bg-secondary_bg_dark dark:text-primary_dark"
+			>
+				<FileText class="h-4 w-4" />
+				Download CV (PDF)
+			</a>
+		</div>
 
-	<!-- CV Section -->
-	<div class="w-full text-left space-y-8">
+		<!-- CV, ordered by importance (the order of sections in cv.json) -->
+		<div class="mt-12 w-full text-left">
+			{sections.map((section: any) => (
+				<CvSection id={section.id} title={section.title} icon={section.icon} note={section.note} display={section.display}>
+					{section.kind === 'publications' ? (
+						<CvPublications items={section.items} />
+					) : section.kind === 'experience' ? (
+						<CvExperience items={section.items} display={section.display} />
+					) : section.kind === 'education' ? (
+						<CvEducation items={section.items} />
+					) : section.kind === 'skills' ? (
+						<CvSkills items={section.items} />
+					) : (
+						<CvCompactList items={section.items} kind={section.kind} />
+					)}
+				</CvSection>
+			))}
+		</div>
 
-		{CVITEMS.map((item: { title: string, type: string, data: any }, index: number) => (
-		<CvSection title={item.title} key={index}>
-			{item.type === 'list' ? (
-				<CvList data={item.data}/>
-			) : item.type === 'logo-list' ? (
-				<CvLogoList data={item.data} />
-			) : item.type === 'timeline' ? (
-				<CvTimeline data={item.data} />
-			) : (
-			<div></div>
-			)}
-		</CvSection>
-		))}
-	</div>
-	<Footer />
+		<Footer />
 	</section>
 </div>

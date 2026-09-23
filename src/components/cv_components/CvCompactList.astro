@@ -1,0 +1,50 @@
+---
+// Renders the one-line CV kinds: awards, training, volunteering, miscellany.
+import { formatRange, startValue } from '../../lib/cv.mjs';
+
+interface Props {
+	items: any[];
+	kind: 'awards' | 'training' | 'volunteering' | 'misc';
+}
+
+const { items, kind } = Astro.props;
+const sorted = kind === 'misc' ? items : [...items].sort((a, b) => startValue(b) - startValue(a));
+
+/** Each kind puts a different field on the bold first line. */
+function headline(item: any) {
+	if (kind === 'volunteering') return item.role;
+	if (kind === 'misc') return item.text;
+	return item.title;
+}
+
+/** …and a different one in the muted trailing position. */
+function subline(item: any) {
+	if (kind === 'volunteering') return [item.org, item.location].filter(Boolean).join(' · ');
+	if (kind === 'training') return item.org;
+	return item.note ?? null;
+}
+---
+<ul class="space-y-2">
+	{sorted.map((item) => (
+		<li class="flex flex-col gap-x-4 sm:flex-row sm:items-baseline">
+			<p class="shrink-0 text-xs text-secondary dark:text-secondary_dark sm:w-36">
+				{formatRange(item.start, item.end)}
+			</p>
+			<div class="min-w-0">
+				<p class="text-sm text-primary dark:text-primary_dark">{headline(item)}</p>
+				{subline(item) && (
+					<p class="text-xs text-secondary dark:text-secondary_dark">{subline(item)}</p>
+				)}
+				{item.links?.length > 0 && (
+					<div class="flex flex-wrap gap-3 pt-0.5">
+						{item.links.map((link: any) => (
+							<a href={link.url} class="text-xs text-primary dark:text-primary_dark hover:underline">
+								{link.icon} {link.label}
+							</a>
+						))}
+					</div>
+				)}
+			</div>
+		</li>
+	))}
+</ul>
