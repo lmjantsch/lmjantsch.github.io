@@ -1,12 +1,18 @@
 ---
-import { Linkedin, Github, GraduationCap, SquareArrowOutUpRight } from '@lucide/astro';
+import { Linkedin, Github, GraduationCap, Mail, SquareArrowOutUpRight } from '@lucide/astro';
 import { SOCIALS } from '../data/consts';
 ---
 
-<div class="flex justify-around space-x-4 text-secondary dark:secondary_dark">
-    {SOCIALS.map((item:{type:string, label?:string, link:string}, index:number) => (
-        <a href={item.link} aria-label={item.label ?? item.type} class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all">
+<div class="flex justify-around space-x-4 text-secondary dark:text-secondary_dark">
+    {SOCIALS.map((item:{type:string, label?:string, link:string}) => (
+        <a
+            href={item.type === 'email' ? '#' : item.link}
+            data-mail={item.type === 'email' ? item.link : undefined}
+            aria-label={item.label ?? item.type}
+            class="p-2 hover:text-primary transition-colors rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:scale-[1.10] transition-all"
+        >
             {
+                item.type === 'email' ? <Mail class="w-6 h-6"/>:
                 item.type === 'linkedin' ? <Linkedin class="w-6 h-6"/>:
                 item.type === 'github' ? <Github class="w-6 h-6"/>:
                 item.type === 'googlescholar' ? <GraduationCap class="w-6 h-6"/>:
@@ -15,3 +21,11 @@ import { SOCIALS } from '../data/consts';
         </a>
     ))}
 </div>
+
+<script>
+    // Join the split address from consts.ts; it is never written whole into the HTML.
+    for (const link of document.querySelectorAll<HTMLAnchorElement>('a[data-mail]')) {
+        const [user, domain] = link.dataset.mail!.split('|');
+        link.href = `mailto:${user}@${domain}`;
+    }
+</script>

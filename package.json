@@ -11,24 +11,15 @@
     "cv:pdf": "node scripts/generate-cv-tex.mjs"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.4.2",
     "@astrojs/mdx": "^8.0.2",
-    "@astrojs/react": "^7.0.0",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@lucide/astro": "0.525.0",
-    "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
     "astro": "^7.3.4",
-    "astro-icon": "^1.2.0",
-    "lucide-react": "^0.545.0",
-    "lucide-static": "^0.525.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "sharp": "^0.34.3",
-    "tailwindcss": "^4.3.3"
+    "js-yaml": "^4.3.2",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.20"

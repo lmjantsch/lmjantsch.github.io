@@ -1,6 +1,7 @@
 ---
-import { GREETING, INTRODUCTION, CONTACT_AND_CV, CV_PDF_PATH } from '../data/consts';
-import { getSections } from '../lib/cv.mjs';
+import { GREETING, INTRODUCTION, CV_PDF_PATH } from '../data/consts';
+import { getCollection } from 'astro:content';
+import { forTarget } from '../lib/cv-content.mjs';
 import profilePicture from '../assets/profile_picture.jpg';
 import { FileText } from '@lucide/astro';
 import Footer from '../components/Footer.astro';
@@ -12,7 +13,7 @@ import CvEducation from '../components/cv_components/CvEducation.astro';
 import CvSkills from '../components/cv_components/CvSkills.astro';
 import CvCompactList from '../components/cv_components/CvCompactList.astro';
 
-const sections = getSections('web');
+const sections = forTarget((await getCollection('cv')).map((entry) => entry.data), 'web');
 ---
 <div>
 	<section class="mx-auto flex min-h-[90vh] max-w-3xl flex-col px-4 py-8">
@@ -28,7 +29,6 @@ const sections = getSections('web');
 			<h1 class="mb-4 text-4xl font-bold text-primary dark:text-primary_dark">{GREETING}</h1>
 
 			<p class="mb-2 max-w-xl text-lg text-secondary dark:text-secondary_dark">{INTRODUCTION}</p>
-			<p class="max-w-xl text-base text-secondary dark:text-secondary_dark">{CONTACT_AND_CV}</p>
 
 			<div class="mt-2">
 				<Socials />
@@ -43,7 +43,7 @@ const sections = getSections('web');
 			</a>
 		</div>
 
-		<!-- CV, ordered by importance (the order of sections in cv.json) -->
+		<!-- CV, ordered by importance (each section's `order` in src/cv/*/_section.mdx) -->
 		<div class="mt-12 w-full text-left">
 			{sections.map((section: any) => (
 				<CvSection id={section.id} title={section.title} icon={section.icon} note={section.note} display={section.display}>

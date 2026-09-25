@@ -1,19 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
+import { getNewsFeed } from '../lib/news';
 import ProfileSection from '../components/ProfileSection.astro';
-import NewsItem from '../components/news_components/NewsItem.astro';
+import NewsTimeline from '../components/news_components/NewsTimeline.astro';
 import Footer from '../components/Footer.astro';
 
-const items = (await getCollection('news')).sort(
-	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
-
-// Group into year buckets so a mixed feed still reads chronologically.
-const years = [...new Set(items.map((item) => item.data.date.getFullYear()))];
-const byYear = years.map((year) => ({
-	year,
-	items: items.filter((item) => item.data.date.getFullYear() === year),
-}));
+const items = await getNewsFeed();
+const entries = items.map((entry) => ({ year: entry.data.date.getFullYear(), entry }));
 ---
 <div id="layout-container" class="mx-auto flex max-w-6xl flex-col lg:flex-row">
 	{/* Left Column: Profile (Static on Desktop) */}
@@ -26,16 +18,7 @@ const byYear = years.map((year) => ({
 
 	{/* Right Column: News feed (Scrollable on Desktop) */}
 	<section id="blog-section" class="w-full px-4 py-4 lg:h-[90vh] lg:w-2/3 lg:overflow-y-auto">
-		{byYear.map(({ year, items: yearItems }) => (
-			<div class="mb-6">
-				<h2 class="sticky top-0 z-10 mb-2 bg-primary_bg/95 py-1 text-xs font-bold text-secondary backdrop-blur dark:bg-primary_bg_dark/95 dark:text-secondary_dark">
-					{year}
-				</h2>
-				<div class="space-y-3">
-					{yearItems.map((entry) => <NewsItem entry={entry} />)}
-				</div>
-			</div>
-		))}
+		<NewsTimeline entries={entries} />
 
 		{items.length === 0 && (
 			<p class="px-2 py-8 text-sm text-secondary dark:text-secondary_dark">Nothing here yet.</p>

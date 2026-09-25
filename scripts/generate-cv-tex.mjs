@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-// Generates build/cv.tex from src/data/cv.json and compiles it to public/cv.pdf.
+// Generates build/cv.tex from src/cv/ and compiles it to public/cv.pdf.
 //
 //   node scripts/generate-cv-tex.mjs             # write .tex and compile
 //   node scripts/generate-cv-tex.mjs --tex-only  # write .tex only (no LaTeX needed)
 //
-// Styling lives in scripts/cv-template.tex; content lives in cv.json. The website
-// and this PDF read the same data through src/lib/cv.mjs, so they cannot drift.
+// Styling lives in scripts/cv-template.tex; content lives in src/cv/. The website
+// and this PDF read the same files through readCv (src/lib/cv-content.mjs), so
+// they cannot drift. Section order and page breaks are set per section, in
+// src/cv/<section>/_section.mdx (pdfOrder, pdfPageBreak).
 
 import { execFile } from 'node:child_process';
 import { mkdir, readFile, writeFile, copyFile, rm } from 'node:fs/promises';
@@ -13,29 +15,14 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
-import { getSections, formatRange, splitAuthors, AUTHOR_NAME } from '../src/lib/cv.mjs';
+import { formatRange, parseDate, splitAuthors, AUTHOR_NAME } from '../src/lib/cv.mjs';
+import { readCv, forTarget } from '../src/lib/cv-content.mjs';
 
 const execFileAsync = promisify(execFile);
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const BUILD_DIR = join(ROOT, 'build');
 const TEX_PATH = join(BUILD_DIR, 'cv.tex');
 const PDF_OUT = join(ROOT, 'public', 'cv.pdf');
-
-/** Section order in the PDF, which differs from the website's importance order. */
-const PDF_ORDER = [
-	'publications',
-	'education',
-	'research-experience',
-	'industry-experience',
-	'skills',
-	'training',
-	'awards',
-	'volunteering',
-	'miscellany',
-];
-
-/** Sections that start a new page. */
-const PAGE_BREAK_BEFORE = new Set(['skills']);
 
 const REPLACEMENTS = [
 	[/\\/g, '\\textbackslash{}'],
@@ -49,7 +36,7 @@ const REPLACEMENTS = [
 ];
 
 function tex(value) {
-	// Spans already written as $...$ in cv.json are maths and pass through untouched;
+	// Spans already written as $...$ in src/cv/ are maths and pass through untouched;
 	// the website strips the delimiters instead (see stripMath in src/lib/cv.mjs).
 	return String(value ?? '')
 		.split(/(\$[^$]*\$)/)
@@ -81,7 +68,7 @@ function authorList(authors) {
 const emitters = {
 	publications(items) {
 		const lines = items.map((item) => {
-			const year = String(item.year);
+			const year = String(parseDate(item.date).year);
 			const venueText = item.venue.includes(year) ? tex(item.venue) : `${tex(item.venue)} ${year}`;
 			const venue = item.status === 'published' ? `In \\emph{${tex(item.venue)}}.` : `\\emph{${venueText}}`;
 			let entry = `\\item \\emph{${tex(item.title)}.} ${authorList(item.authors)}. ${venue}`;
@@ -203,23 +190,20 @@ const emitters = {
 	},
 };
 
-function buildBody() {
-	const sections = getSections('pdf');
-	const byId = new Map(sections.map((section) => [section.id, section]));
+async function buildBody() {
+	const sections = forTarget(await readCv(join(ROOT, 'src', 'cv')), 'pdf');
 
-	const unknown = sections.map((s) => s.id).filter((id) => !PDF_ORDER.includes(id));
-	if (unknown.length) {
-		console.warn(`⚠ Not in PDF_ORDER, appended at the end: ${unknown.join(', ')}`);
+	const unordered = sections.filter((section) => section.pdfOrder === undefined).map((section) => section.id);
+	if (unordered.length) {
+		console.warn(`⚠ No pdfOrder, appended at the end: ${unordered.join(', ')}`);
 	}
 
-	return [...PDF_ORDER, ...unknown]
-		.filter((id) => byId.has(id))
-		.map((id) => {
-			const section = byId.get(id);
+	return sections
+		.map((section) => {
 			const emit = emitters[section.kind];
-			if (!emit) throw new Error(`No LaTeX emitter for section kind "${section.kind}" (${id})`);
+			if (!emit) throw new Error(`No LaTeX emitter for section kind "${section.kind}" (${section.id})`);
 			const parts = [];
-			if (PAGE_BREAK_BEFORE.has(id)) parts.push('\\vspace{16pt}\n\\clearpage');
+			if (section.pdfPageBreak) parts.push('\\vspace{16pt}\n\\clearpage');
 			parts.push(heading(section.pdfTitle ?? section.title));
 			parts.push('');
 			parts.push(emit(section.items, section));
@@ -264,7 +248,7 @@ const template = await readFile(join(ROOT, 'scripts', 'cv-template.tex'), 'utf8'
 if (!template.includes('%%CV-BODY%%')) throw new Error('cv-template.tex is missing the %%CV-BODY%% marker');
 
 await mkdir(BUILD_DIR, { recursive: true });
-await writeFile(TEX_PATH, template.replace('%%CV-BODY%%', buildBody()));
+await writeFile(TEX_PATH, template.replace('%%CV-BODY%%', await buildBody()));
 console.log(`✓ wrote ${TEX_PATH.replace(`${ROOT}/`, '')}`);
 
 if (process.argv.includes('--tex-only')) process.exit(0);

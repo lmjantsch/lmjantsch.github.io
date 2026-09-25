@@ -1,0 +1,16 @@
+---
+title: "Layer-wise Target Propagation: Efficient Component Attribution through Target Centric Propagation"
+authors: ["Lasse Jantsch", "Dong-Jae Koh", "Seonghyeon Lee", "Young-Kyoon Suh"]
+venue: "EMNLP 2026; Mechanistic Interpretability Workshop @ ICML 2026"
+date: "2026-08"
+source: "arXiv"
+tags: ["interpretability"]
+status: "accepted"
+featured: true
+summary: "Attributing model behaviour to individual components normally costs one pass per component. Layer-wise Target Propagation linearises the transformer into distinct pathways and propagates the target unembedding backwards through them, giving dense attributions for the whole network in a single forward and backward pass."
+bullets: ["Developed Layer-wise Target Propagation (LTP), a framework that traces information flow on the frozen transformer in one forward and one backward pass, without counterfactual examples.", "Achieved $O(1)$ time complexity with respect to the number of model components, scaling to long input sequences and dense component attribution while establishing state-of-the-art faithfulness."]
+links:
+  - label: "Paper"
+    url: "https://arxiv.org/html/2603.19742v2"
+news: true
+---

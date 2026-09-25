@@ -1,0 +1,114 @@
+---
+// News items on a vertical timeline with a year pill per year and a node per
+// item. Used by the news feed and the CV's publications. With `initial` set, only
+// that many items show at first, and a button reveals `step` more at a time.
+import NewsItem from './NewsItem.astro';
+
+interface Props {
+	/** Newest first. */
+	entries: { year: number; entry: any }[];
+	initial?: number;
+	step?: number;
+	/** Singular noun for the button, e.g. "publication". */
+	noun?: string;
+}
+
+const { entries, initial = Infinity, step = 10, noun = 'item' } = Astro.props;
+const extra = entries.length - initial;
+const firstStep = Math.min(step, extra);
+---
+<div data-timeline data-initial={initial} data-step={step} data-noun={noun}>
+	<!-- Pill, line and nodes share a centre at 28px: pill is w-14, line is w-1 at left 26px. -->
+	<div class="relative">
+		<div class="absolute bottom-0 left-[26px] top-0 w-1 rounded-full bg-secondary_bg dark:bg-secondary_bg_dark" aria-hidden="true"></div>
+
+		<!-- gap rather than space-y: gaps ignore hidden items, so the line ends at the last visible one. -->
+		<ol class="relative flex flex-col gap-3">
+			{entries.map(({ year, entry }, i) => (
+				<li data-timeline-item hidden={i >= initial} class="flex flex-col gap-3">
+					{(i === 0 || entries[i - 1].year !== year) && <p class="year-pill">{year}</p>}
+					<div class="relative ml-10 sm:ml-16">
+						<span class:list={['node', entry.data.featured ? 'node-featured' : 'node-row']} aria-hidden="true"></span>
+						<NewsItem entry={entry} />
+					</div>
+				</li>
+			))}
+		</ol>
+	</div>
+
+	{extra > 0 && (
+		<div class="mt-4 flex justify-center">
+			<button
+				type="button"
+				data-timeline-toggle
+				class="rounded-full border border-secondary_bg px-4 py-1.5 text-sm text-secondary transition-colors hover:bg-secondary_bg hover:text-primary dark:border-secondary_bg_dark dark:text-secondary_dark dark:hover:bg-secondary_bg_dark dark:hover:text-primary_dark"
+			>
+				Show {firstStep} more {noun}{firstStep > 1 && 's'}
+			</button>
+		</div>
+
+		<!-- Without JavaScript, show everything and drop the button. -->
+		<noscript><style>[data-timeline-item][hidden] { display: flex !important; } [data-timeline-toggle] { display: none; }</style></noscript>
+	)}
+</div>
+
+<script>
+	for (const root of document.querySelectorAll<HTMLElement>('[data-timeline]')) {
+		const button = root.querySelector<HTMLButtonElement>('[data-timeline-toggle]');
+		if (!button) continue;
+
+		const items = [...root.querySelectorAll<HTMLElement>('[data-timeline-item]')];
+		const initial = Number(root.dataset.initial);
+		const step = Number(root.dataset.step);
+		const noun = root.dataset.noun;
+		let shown = initial;
+
+		const render = () => {
+			items.forEach((item, i) => (item.hidden = i >= shown));
+			const remaining = Math.min(step, items.length - shown);
+			button.textContent =
+				remaining > 0 ? `Show ${remaining} more ${noun}${remaining > 1 ? 's' : ''}` : `Show fewer ${noun}s`;
+		};
+
+		button.addEventListener('click', () => {
+			if (shown >= items.length) {
+				shown = initial;
+				render();
+				// Collapsing can leave the reader far below the section; bring it back.
+				const section = root.closest('section');
+				if (section && section.getBoundingClientRect().top < 0) section.scrollIntoView({ behavior: 'smooth' });
+			} else {
+				shown += step;
+				render();
+			}
+		});
+	}
+</script>
+
+<style>
+	@reference "../../styles/global.css";
+
+	/* The shadow masks the timeline line directly above the pill. */
+	.year-pill {
+		@apply relative w-14 rounded-full bg-secondary_bg px-3 py-1 text-center text-xs font-bold text-secondary shadow-[0_-12px_0] shadow-primary_bg dark:bg-secondary_bg_dark dark:text-secondary_dark dark:shadow-primary_bg_dark;
+	}
+
+	/* A node on the line, level with the item's first line of text. Its left
+	   offset is the item's margin minus the line's 28px centre, minus half its width. */
+	.node {
+		@apply absolute size-3 rounded-full border-2 border-secondary bg-primary_bg dark:border-secondary_dark dark:bg-primary_bg_dark;
+		left: calc(28px - 2.5rem - 6px);
+	}
+	@media (width >= 40rem) {
+		.node {
+			left: calc(28px - 4rem - 6px);
+		}
+	}
+	.node-row {
+		top: 0.75rem;
+	}
+	.node-featured {
+		@apply bg-secondary dark:bg-secondary_dark;
+		top: 1.375rem;
+	}
+</style>

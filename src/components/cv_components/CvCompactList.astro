@@ -1,6 +1,6 @@
 ---
 // Renders the one-line CV kinds: awards, training, volunteering, miscellany.
-import { formatRange, startValue } from '../../lib/cv.mjs';
+import { formatRange } from '../../lib/cv.mjs';
 
 interface Props {
 	items: any[];
@@ -8,7 +8,6 @@ interface Props {
 }
 
 const { items, kind } = Astro.props;
-const sorted = kind === 'misc' ? items : [...items].sort((a, b) => startValue(b) - startValue(a));
 
 /** Each kind puts a different field on the bold first line. */
 function headline(item: any) {
@@ -25,7 +24,7 @@ function subline(item: any) {
 }
 ---
 <ul class="space-y-2">
-	{sorted.map((item) => (
+	{items.map((item) => (
 		<li class="flex flex-col gap-x-4 sm:flex-row sm:items-baseline">
 			<p class="shrink-0 text-xs text-secondary dark:text-secondary_dark sm:w-36">
 				{formatRange(item.start, item.end)}

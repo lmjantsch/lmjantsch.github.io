@@ -1,9 +1,9 @@
-// Shared CV helpers. Plain .mjs so that both the Astro components and the
-// Node-side LaTeX generator (scripts/generate-cv-tex.mjs) consume the same logic.
-import cvData from '../data/cv.json' with { type: 'json' };
+// Shared CV formatting helpers. Plain .mjs so that both the Astro components and
+// the Node-side LaTeX generator (scripts/generate-cv-tex.mjs) consume the same logic.
+// Reading the CV itself is src/lib/cv-content.mjs.
 
 /** Name to bold in author lists. Middle initials are ignored when matching. */
-export const AUTHOR_NAME = cvData.meta.authorName;
+export const AUTHOR_NAME = 'Lasse Jantsch';
 
 const MONTHS_SHORT = [
 	'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -48,27 +48,6 @@ export function formatRange(start, end, style = 'web') {
 	return `${fmt(from)} – ${fmt(to)}`;
 }
 
-/** Sort key (descending): ongoing items first, then by start date. */
-export function startValue(item) {
-	const d = parseDate(item.start);
-	return d ? d.year * 12 + (d.month ?? 1) : 0;
-}
-
-function isVisible(entry, target) {
-	return !(entry.omit ?? []).includes(target);
-}
-
-/**
- * The CV filtered for one output target ('web' | 'pdf'), with empty sections dropped.
- * Never mutates the imported JSON.
- */
-export function getSections(target) {
-	return cvData.sections
-		.filter((section) => isVisible(section, target))
-		.map((section) => ({ ...section, items: section.items.filter((item) => isVisible(item, target)) }))
-		.filter((section) => section.items.length > 0);
-}
-
 /** Split an author list around the site owner so their name can be emphasised. */
 export function splitAuthors(authors, owner) {
 	return authors.map((name) => ({ name, isOwner: normalise(name) === normalise(owner) }));
@@ -83,9 +62,3 @@ function normalise(name) {
 export function stripMath(text) {
 	return String(text ?? '').replace(/\$([^$]*)\$/g, '$1');
 }
-
-export const PUBLICATION_STATUS = {
-	'under-review': 'Under Review',
-	accepted: 'Accepted',
-	published: null,
-};

@@ -1,0 +1,12 @@
+---
+title: "Where Does the Noise Come From? Rectified Edge Attribution Patching for Accurate Circuit Discovery"
+authors: ["Lasse Jantsch", "Dong-Jae Koh", "Huisu Kim", "Seonghyeon Lee", "Young-Kyoon Suh"]
+venue: "Under Review"
+date: "2026"
+tags: ["interpretability"]
+status: "under-review"
+featured: true
+summary: "Edge Attribution Patching is the standard fast method for finding circuits in a model, but its gradient approximation quietly introduces error. We trace where that error comes from and correct it."
+bullets: ["Identified three sources of approximation noise in Edge Attribution Patching (EAP) and introduced lightweight backward-pass corrections in LayerNorms, bilinear functions and MLP activations.", "Corrections consistently improve the faithfulness and robustness of discovered circuits across multiple LLM families with minimal increase of compute."]
+order: -1
+---
