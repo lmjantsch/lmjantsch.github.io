@@ -91,4 +91,6 @@ Astro's image service is set to `noop` in `astro.config.mjs`, so images pass thr
 
 ### Deployment
 
+Astro 7 needs Node >= 22.12; `withastro/action` defaults to Node 20, so `deploy.yml` pins `node-version: 22`.
+
 `site` in `astro.config.mjs` feeds canonical URLs, the sitemap, and RSS. For a project page (repo not named `<user>.github.io`) it must include the repo path segment.
